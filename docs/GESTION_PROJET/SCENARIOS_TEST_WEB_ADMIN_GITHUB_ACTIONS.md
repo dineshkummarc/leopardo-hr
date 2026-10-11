@@ -698,3 +698,33 @@ propagation i18n du 2026-09-14 (PR #7350).
 - Jest `src/app/cagnottes/__tests__/cagnotte-page.test.tsx` (4 scénarios : don mobile money bout-en-bout, slug inconnu, mur désactivé, cagnotte close) — check « Frontend — ESLint + TypeScript ».
 - Parité et checksums i18n (`validate.js`), catalogues mobiles `.arb` régénérés (`sync-mobile.js`, garde `validate-and-sync`).
 - Gardes vitrine : mojibake, french-copy, pages orphelines (hors `(landing)` — non concernée).
+## Addendum 2026-10-11 — secteur « Association / ONG » de l'entretien de préparation (PR #8401, issue #8400, FUND-080)
+
+**Surface** : l'entretien de préparation (`SetupInterview.tsx`, parcours post-signup) propose une nouvelle valeur de secteur « Association / ONG » (`association`) — mappée côté `SetupInterviewPlanner` à la solution `fundraising` (manifest `FundraisingManifest` enregistré au `SolutionCatalogue`, industrie `SolutionIndustry::Solidarity`).
+
+### Scénarios de recette
+
+1. Tenant qui choisit « Association / ONG » à l'entretien : à la complétion (`POST /setup-interview`), la verticale `fundraising` est activée (feature flag tenant) — le module « Cagnottes solidaires » devient accessible (API privée `/fundraising/*`, console de paramétrage).
+2. Repli fail-closed : une valeur de secteur inconnue reste ignorée (aucune activation), la valeur `association` passe le `sanitize` (allowlist étendue).
+3. i18n : le libellé de l'option passe par le catalogue (`setupInterview.questions.sector.options.association` × fr/en/ar/tr), zéro littéral hardcodé.
+
+### Vérification automatique
+
+- Unitaires `SetupInterviewPlannerTest` : mapping `association → fundraising` + `sanitize` du nouveau secteur.
+- Feature `SolutionManifestConformanceTest` : 11 manifests enregistrés et conformes au contrat Core v2.
+- Parité i18n (`validate.js`), catalogues mobiles `.arb` régénérés (`sync-mobile.js`).
+
+## Addendum 2026-10-11 — visibilité vitrine de la verticale « Cagnottes solidaires » (PR #8415, issue #8414, FUND-095)
+
+**Surface** : section « Verticales métier » de la home vitrine — nouvelle carte « Cagnottes solidaires » (icône Gift) pointant vers la nouvelle page pack `/packs/cagnottes` (mécanisme data-driven `pack-pages.ts`).
+
+### Scénarios de recette
+
+1. La home affiche 5 cartes verticales dont « Cagnottes solidaires » ; le lien mène à `/packs/cagnottes` (×4 locales fr/en/ar/tr).
+2. `/packs/cagnottes` présente la promesse (lien public de collecte, carte + mobile money, reversement au bénéficiaire), les bénéfices, le contenu inclus et les CTA (création d'espace / conseiller) ; un slug inconnu reste en 404 (`isPackVertical`).
+3. i18n : copy ×4 complète via `pack-pages.ts` (chemin exempté PA2-I18N-014), zéro régression sur les 3 packs existants.
+
+### Vérification automatique
+
+- Jest `VerticalsAndZKTeco.test.tsx` (carte présente + lien `/packs/cagnottes`) — check « Frontend — ESLint + TypeScript ».
+- Gardes vitrine : mojibake, french-copy, pages orphelines (`/packs/cagnottes` référencé depuis la home).
