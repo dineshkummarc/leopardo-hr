@@ -679,6 +679,23 @@ propagation i18n du 2026-09-14 (PR #7350).
 - Parité et checksums i18n (`validate.js`), garde « no new hardcoded strings » (diff), parité catalogues backend ×4.
 
 
+## Addendum 2026-10-11 — espace tenant de gestion des cagnottes (PR #8413, issue #8412, FUND-090)
+
+**Surface** : nouvelle page protégée `/fundraising` du portail client (`front/web/src/app/(dashboard)/fundraising/`) — gestion de la verticale « Cagnottes solidaires » par le responsable du tenant (API privée `/fundraising/*`, gate `module.fundraising` + `api.manager:principal,rh`). Distincte de la page PUBLIQUE `/cagnottes/{slug}` (FUND-100).
+
+### Scénarios de recette
+
+1. Tenant avec flag `fundraising` : l'entrée « Cagnottes » apparaît dans la navigation (`client-features`, featureKeys `fundraising`) ; la page liste les cagnottes (statut, collecté / objectif, contributions, solde disponible).
+2. Création : le formulaire produit un brouillon (`POST /fundraising/fundraisers`) ; « Publier » le rend encaissable et expose le lien public `/cagnottes/{slug}` (copie en 1 clic) ; pause / reprise / clôture fonctionnent par transitions dédiées.
+3. Reversement : la demande (`POST /fundraising/fundraisers/{id}/payouts`) est pré-remplie au solde disponible (règle de solde côté API) ; la liste par cagnotte suit les statuts et « Marquer versé » clôt le cycle (`requested → processing → paid`).
+4. Paramétrage : l'onglet dédié lit (`GET`) et enregistre (`PUT`) méthodes offertes, min/max et montants suggérés par défaut, anonymat / messages / mur des soutiens — appliqué immédiatement à la page publique.
+5. Tenant sans le flag : bannière « verticale non activée » (403/404 fail-closed, jamais d'erreur brute).
+6. i18n : page intégrale fr/en/ar/tr via le catalogue `cagnottesModule.*` (zéro littéral hardcodé — garde « no new hardcoded strings »).
+
+### Vérification automatique
+
+- Jest `src/app/(dashboard)/fundraising/__tests__/fundraising-page.test.tsx` (4 scénarios : liste + publication, création, fail-closed, paramétrage) — check « Frontend — ESLint + TypeScript ».
+- Parité i18n (`validate.js`), catalogues mobiles `.arb` régénérés (`sync-mobile.js`, garde `validate-and-sync`).
 ## Addendum 2026-10-11 — page publique de don « cagnotte » (PR #8411, issue #8402, FUND-100)
 
 **Surface** : nouvelle page PUBLIQUE vitrine `/cagnottes/{slug}` (`front/web/src/app/cagnottes/[slug]/`) — surface d'encaissement de la verticale « Cagnottes solidaires », adossée à l'API publique isolée (`throttle:shop-public`, DTO zéro donnée interne).

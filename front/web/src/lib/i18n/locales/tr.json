@@ -1,6 +1,6 @@
 {
   "_version": "1.0.0",
-  "_updated_at": "2026-10-10T00:00:00Z",
+  "_updated_at": "2026-10-11T00:00:00Z",
   "_locale": "tr",
   "app": {
     "title": "Leopardo — İşletme Yönetimi Paketi"
@@ -7340,5 +7340,99 @@
     "driverAvailable": "Müsait",
     "driverBusy": "Yolculukta",
     "driverSuspended": "Askıya alındı"
+  },
+  "cagnottesModule": {
+    "title": "Dayanışma kampanyaları",
+    "subtitle": "Herkese açık bağlantıyla toplayın — banka kartı ve mobil para — sonra hak sahibine aktarın.",
+    "tabs": {
+      "cagnottes": "Kampanyalar",
+      "settings": "Ayarlar"
+    },
+    "errorGeneric": "Bir hata oluştu.",
+    "created": "Kampanya taslak olarak oluşturuldu. Bağış bağlantısını almak için yayınlayın.",
+    "payoutRequested": "Ödeme talep edildi. Ödemeler listesinden takip edin.",
+    "settingsSaved": "Ayarlar kaydedildi — herkese açık sayfaya anında uygulandı.",
+    "inactive": {
+      "title": "Dikey çözüm etkin değil",
+      "body": "Dayanışma kampanyaları bu alanda etkin değil. Kurulum görüşmesinde \"Dernek / STK\" yanıtını verin veya desteğe başvurun."
+    },
+    "newCagnotte": "Yeni kampanya",
+    "empty": "Henüz kampanya yok — ilkini oluşturun ve bağlantısını paylaşın.",
+    "for": "Yararına",
+    "contributions": "katkı",
+    "available": "kullanılabilir",
+    "copied": "Bağlantı kopyalandı!",
+    "copyLink": "Bağış bağlantısını kopyala",
+    "viewPublic": "Herkese açık sayfayı gör",
+    "cancel": "İptal",
+    "showPayouts": "Ödemeler",
+    "hidePayouts": "Ödemeleri gizle",
+    "create": {
+      "title": "Kampanya oluştur",
+      "titleLabel": "Başlık",
+      "titlePlaceholder": "Örn. Fatou'nun tıbbi masrafları için yardım",
+      "beneficiary": "Hak sahibi",
+      "beneficiaryPlaceholder": "Kişi veya amacın adı",
+      "contact": "Hak sahibi iletişimi",
+      "contactPlaceholder": "Telefon veya e-posta (dahili)",
+      "category": "Kategori",
+      "goal": "Hedef",
+      "currency": "Para birimi",
+      "endsAt": "Bağış bitişi",
+      "suggested": "Önerilen tutarlar (virgülle ayrılmış)",
+      "min": "Min tutar",
+      "max": "Maks tutar",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Bu kampanyanın hikâyesini anlatın — katkıda bulunanlar bunu görecek.",
+      "submit": "Taslak oluştur"
+    },
+    "categories": {
+      "medical": "Tıbbi",
+      "education": "Eğitim",
+      "emergency": "Acil",
+      "community": "Topluluk",
+      "project": "Proje",
+      "other": "Diğer"
+    },
+    "actions": {
+      "publish": "Yayınla",
+      "pause": "Duraklat",
+      "resume": "Sürdür",
+      "close": "Kapat",
+      "payout": "Parayı aktar"
+    },
+    "payout": {
+      "title": "Ödeme talebi",
+      "amount": "Tutar",
+      "method": "Ödeme yöntemi",
+      "recipient": "Alıcı adı",
+      "account": "Hesap / numara",
+      "accountPlaceholder": "+221… / IBAN",
+      "submit": "Talebi gönder",
+      "empty": "Bu kampanya için ödeme yok.",
+      "markPaid": "Ödendi işaretle"
+    },
+    "payoutMethods": {
+      "mobile_money": "Mobil para",
+      "bank_transfer": "Banka havalesi"
+    },
+    "settings": {
+      "title": "Modül ayarları",
+      "hint": "Tüm kampanyalarınıza ve herkese açık bağış sayfasına anında uygulanır.",
+      "methods": "Sunulan ödeme yöntemleri",
+      "minDefault": "Varsayılan min tutar",
+      "maxDefault": "Varsayılan maks tutar",
+      "suggestedDefault": "Varsayılan önerilen tutarlar",
+      "allowAnonymous": "Anonim katkılara izin ver",
+      "allowMessages": "Katkı mesajlarına izin ver",
+      "showSupporters": "Destekçi duvarı herkese açık",
+      "save": "Ayarları kaydet"
+    },
+    "methods": {
+      "card": "Banka kartı",
+      "mobile_money": "Mobil para",
+      "bank_transfer": "Havale",
+      "cash": "Nakit"
+    }
   }
 }

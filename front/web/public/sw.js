@@ -26,6 +26,8 @@ const PROTECTED_PREFIXES = [
   '/social-marketing',
   '/restaurant',
   '/showcase',
+  // FUND-090 — gestion des cagnottes, espace tenant (zone dashboard).
+  '/fundraising',
   // BC-19 (#7425) — mur de caméras et détail caméra (zone dashboard).
   '/cameras',
   // #7400 — flotte & véhicules de service (zone dashboard).

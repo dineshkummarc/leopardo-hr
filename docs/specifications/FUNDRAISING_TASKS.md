@@ -95,6 +95,13 @@
 | FUND-081 | Secteur `association` de l'entretien de préparation → solution `fundraising` (planner + front + i18n ×4) | ✅ |
 | FUND-082 | Tests : conformité 11 manifests, mapping `association → fundraising`, sanitize | ✅ |
 
+## Lot J — Espace tenant de gestion (branche `feat/fundraising-tenant-ui`)
+
+| ID | Tâche | Statut |
+|---|---|---|
+| FUND-090 | Page `/fundraising` (dashboard tenant) : création, publication/pause/clôture, lien public, reversements + paramétrage module (FUND-070 côté tenant) | ✅ |
+| FUND-091 | Navigation client (client-features, préfixes protégés) + i18n ×4 + tests jest | ✅ |
+
 ## Lot K — Visibilité vitrine (branche `feat/vitrine-cagnottes`)
 
 | ID | Tâche | Statut |
