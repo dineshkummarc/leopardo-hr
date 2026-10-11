@@ -56,6 +56,8 @@ const DASHBOARD_PREFIXES = [  '/dashboard',
   '/social-marketing',
   '/restaurant',
   '/showcase',
+  // FUND-090 : gestion des cagnottes (route protégée tenant).
+  '/fundraising',
   // BC-19 (#7425) — mur de caméras + détail : même gate cosmétique de session
   // que le reste de la zone dashboard (la garde réelle reste l'API).
   '/cameras',

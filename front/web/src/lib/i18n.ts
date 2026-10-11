@@ -116,7 +116,7 @@ export type CopyTree = {
       absences: string; contracts: string; payroll: string; training: string;
       reports: string; partner: string; billing: string; integrations: string;
       marketing: string; accounting: string; crm: string; restaurant: string;
-      restaurant_kitchen: string; edu_manager: string; travel: string; travel_portal: string; fuel: string; fleet: string; showcase: string;
+      restaurant_kitchen: string; edu_manager: string; travel: string; travel_portal: string; fuel: string; fleet: string; showcase: string; fundraising: string;
       /** BC-30 (#7792) — verticale HealthManager (hôpitaux & cliniques) */
       health: string; health_patients: string; health_appointments: string;
       health_admissions: string; health_billing: string; health_referential: string;
@@ -802,6 +802,7 @@ const copy: Record<AppLocale, CopyTree> = {
         fuel: 'Station-service',
         fleet: 'Flotte',
         showcase: 'Site vitrine',
+        fundraising: 'Cagnottes',
         cameras: 'Caméras',
         commerce: 'Commerce',
         communication: 'Communication',
@@ -1505,6 +1506,7 @@ const copy: Record<AppLocale, CopyTree> = {
         fuel: 'محطة وقود',
         fleet: 'الأسطول',
         showcase: 'موقع التعريف',
+        fundraising: 'حملات التضامن',
         cameras: 'الكاميرات',
         commerce: 'التجارة',
         communication: 'التواصل',
@@ -2204,6 +2206,7 @@ const copy: Record<AppLocale, CopyTree> = {
         fuel: 'Akaryakıt istasyonu',
         fleet: 'Filo',
         showcase: 'Tanıtım sitesi',
+        fundraising: 'Kampanyalar',
         cameras: 'Kameralar',
         commerce: 'Ticaret',
         communication: 'İletişim',
@@ -2903,6 +2906,7 @@ const copy: Record<AppLocale, CopyTree> = {
         fuel: 'Fuel station',
         fleet: 'Fleet',
         showcase: 'Showcase site',
+        fundraising: 'Fundraisers',
         cameras: 'Cameras',
         commerce: 'Commerce',
         communication: 'Communication',

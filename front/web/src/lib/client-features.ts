@@ -32,6 +32,7 @@ import {
   UtensilsCrossed,
   Video,
   Wallet,
+  Gift,
 } from 'lucide-react';
 import type { StoredAuthUser } from '@/lib/i18n';
 export type ClientModuleKey =
@@ -65,6 +66,7 @@ export type ClientModuleKey =
   | 'fleet'
   | 'cameras'
   | 'showcase'
+  | 'fundraising'
   | 'communication'
   | 'assistant'
   | 'commerce';
@@ -335,6 +337,21 @@ export const CLIENT_MODULES: ClientModule[] = [
     featureKeys: ['showcase', 'company_showcase'],
     allowedRoles: ['super_admin', 'admin', 'manager'],
     upgradeLabel: 'Site vitrine public de l\'entreprise',
+  },
+  // FUND-090 (#8412) — verticale « Cagnottes solidaires » : le responsable
+  // gère ses cagnottes (création, publication, lien public de collecte,
+  // reversements) et le paramétrage du module (page `/cagnottes`).
+  // Résolution par le feature flag tenant `fundraising` (fail-closed).
+  {
+    key: 'fundraising',
+    href: '/fundraising',
+    label: 'Cagnottes',
+    group: 'growth',
+    icon: Gift,
+    capabilityKeys: ['fundraising', 'can_view_fundraising'],
+    featureKeys: ['fundraising'],
+    allowedRoles: ['super_admin', 'admin', 'manager'],
+    upgradeLabel: 'Cagnottes solidaires (collecte par lien public)',
   },
   {
     key: 'partner',

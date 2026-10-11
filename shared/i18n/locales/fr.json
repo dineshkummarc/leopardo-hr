@@ -7231,5 +7231,98 @@
         "no_show": "Non présenté"
       }
     }
+  },
+  "cagnottesModule": {
+    "title": "Cagnottes solidaires",
+    "subtitle": "Collectez par lien public — carte bancaire et mobile money — puis reversez au bénéficiaire.",
+    "tabs": {
+      "cagnottes": "Cagnottes",
+      "settings": "Paramétrage"
+    },
+    "errorGeneric": "Une erreur est survenue.",
+    "created": "Cagnotte créée en brouillon. Publiez-la pour obtenir son lien de collecte.",
+    "payoutRequested": "Reversement demandé. Suivez son traitement dans la liste des reversements.",
+    "settingsSaved": "Paramétrage enregistré — appliqué immédiatement à la page publique.",
+    "inactive": {
+      "title": "Verticale non activée",
+      "body": "Les Cagnottes solidaires ne sont pas activées sur cet espace. Répondez « Association / ONG » à l'entretien de préparation ou contactez le support."
+    },
+    "newCagnotte": "Nouvelle cagnotte",
+    "empty": "Aucune cagnotte pour l'instant — créez la première et partagez son lien.",
+    "for": "Pour",
+    "contributions": "contributions",
+    "available": "disponible",
+    "copied": "Lien copié !",
+    "copyLink": "Copier le lien de collecte",
+    "viewPublic": "Voir la page publique",
+    "cancel": "Annuler",
+    "showPayouts": "Reversements",
+    "hidePayouts": "Masquer les reversements",
+    "create": {
+      "title": "Créer une cagnotte",
+      "titleLabel": "Titre",
+      "titlePlaceholder": "Ex. Aide pour les frais médicaux de Fatou",
+      "beneficiary": "Bénéficiaire",
+      "beneficiaryPlaceholder": "Nom de la personne ou de la cause",
+      "contact": "Contact du bénéficiaire",
+      "contactPlaceholder": "Téléphone ou email (interne)",
+      "category": "Catégorie",
+      "goal": "Objectif",
+      "currency": "Devise",
+      "endsAt": "Fin de collecte",
+      "suggested": "Montants suggérés (séparés par des virgules)",
+      "min": "Montant min",
+      "max": "Montant max",
+      "description": "Description",
+      "descriptionPlaceholder": "Racontez l'histoire de cette cagnotte — c'est ce que verront les contributeurs.",
+      "submit": "Créer le brouillon"
+    },
+    "categories": {
+      "medical": "Médical",
+      "education": "Éducation",
+      "emergency": "Urgence",
+      "community": "Communauté",
+      "project": "Projet",
+      "other": "Autre"
+    },
+    "actions": {
+      "publish": "Publier",
+      "pause": "Mettre en pause",
+      "resume": "Reprendre",
+      "close": "Clôturer",
+      "payout": "Reverser les fonds"
+    },
+    "payout": {
+      "title": "Demande de reversement",
+      "amount": "Montant",
+      "method": "Moyen de reversement",
+      "recipient": "Nom du bénéficiaire",
+      "account": "Compte / numéro",
+      "submit": "Envoyer la demande",
+      "empty": "Aucun reversement pour cette cagnotte.",
+      "markPaid": "Marquer versé"
+    },
+    "payoutMethods": {
+      "mobile_money": "Mobile money",
+      "bank_transfer": "Virement bancaire"
+    },
+    "settings": {
+      "title": "Paramétrage du module",
+      "hint": "Appliqué immédiatement à toutes vos cagnottes et à la page publique de don.",
+      "methods": "Moyens de paiement offerts",
+      "minDefault": "Montant min par défaut",
+      "maxDefault": "Montant max par défaut",
+      "suggestedDefault": "Montants suggérés par défaut",
+      "allowAnonymous": "Contributions anonymes autorisées",
+      "allowMessages": "Messages des contributeurs autorisés",
+      "showSupporters": "Mur des soutiens visible publiquement",
+      "save": "Enregistrer le paramétrage"
+    },
+    "methods": {
+      "card": "Carte bancaire",
+      "mobile_money": "Mobile money",
+      "bank_transfer": "Virement",
+      "cash": "Espèces"
+    }
   }
 }

@@ -87,6 +87,13 @@
 | FUND-074 | Console admin : page « Cagnottes solidaires — Paramétrage » + route + entrée fiche entreprise (label, icône, surface) + i18n ×4 | ✅ |
 | FUND-075 | Tests `FundraisingSettingsTest` (défauts, upsert unique, validation, RBAC/flag, consommation publique) + OpenAPI | ✅ |
 
+## Lot J — Espace tenant de gestion (branche `feat/fundraising-tenant-ui`)
+
+| ID | Tâche | Statut |
+|---|---|---|
+| FUND-090 | Page `/fundraising` (dashboard tenant) : création, publication/pause/clôture, lien public, reversements + paramétrage module (FUND-070 côté tenant) | ✅ |
+| FUND-091 | Navigation client (client-features, préfixes protégés) + i18n ×4 + tests jest | ✅ |
+
 ## Phase 2 (hors ce lot)
 
 | ID | Tâche | Statut |
