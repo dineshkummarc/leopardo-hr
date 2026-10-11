@@ -7231,5 +7231,63 @@
         "no_show": "No-show"
       }
     }
+  },
+  "cagnotte": {
+    "loading": "Loading…",
+    "notFound": {
+      "title": "Fundraiser not found",
+      "body": "This link does not match any active fundraiser. Please check the shared link."
+    },
+    "for": "For",
+    "contributors": "contributors",
+    "share": {
+      "copy": "Copy link",
+      "copied": "Link copied!",
+      "qr": "QR code",
+      "qrAlt": "QR code of the fundraiser link",
+      "hint": "Share this link"
+    },
+    "success": {
+      "title": "Thank you for your donation!",
+      "body": "Your contribution has been recorded."
+    },
+    "reference": "Reference",
+    "failed": {
+      "title": "Payment failed",
+      "body": "No amount was charged. You can try again.",
+      "retry": "Try again"
+    },
+    "pending": {
+      "title": "Payment pending",
+      "hint": "This page will update automatically once the payment is confirmed."
+    },
+    "form": {
+      "title": "Contribute",
+      "amount": "Amount",
+      "customAmount": "Custom amount",
+      "min": "Min",
+      "max": "Max",
+      "method": "Payment method",
+      "name": "Your name (optional)",
+      "email": "Your email (optional)",
+      "phone": "Mobile money number (required)",
+      "anonymous": "Stay anonymous on the supporters wall",
+      "message": "A message of support (optional)",
+      "submit": "Donate"
+    },
+    "methods": {
+      "card": "Bank card",
+      "mobile_money": "Mobile money",
+      "bank_transfer": "Bank transfer",
+      "cash": "Cash"
+    },
+    "errors": {
+      "generic": "Something went wrong. Please try again."
+    },
+    "ended": "This fundraiser is not accepting contributions at the moment.",
+    "supporters": {
+      "title": "Supporters"
+    },
+    "poweredBy": "Powered by Leopardo — Solidarity fundraisers"
   }
 }

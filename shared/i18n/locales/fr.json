@@ -7231,5 +7231,63 @@
         "no_show": "Non présenté"
       }
     }
+  },
+  "cagnotte": {
+    "loading": "Chargement…",
+    "notFound": {
+      "title": "Cagnotte introuvable",
+      "body": "Ce lien ne correspond à aucune cagnotte active. Vérifiez le lien partagé."
+    },
+    "for": "Pour",
+    "contributors": "contributeurs",
+    "share": {
+      "copy": "Copier le lien",
+      "copied": "Lien copié !",
+      "qr": "QR code",
+      "qrAlt": "QR code du lien de la cagnotte",
+      "hint": "Partagez ce lien"
+    },
+    "success": {
+      "title": "Merci pour votre don !",
+      "body": "Votre contribution a bien été enregistrée."
+    },
+    "reference": "Référence",
+    "failed": {
+      "title": "Le paiement a échoué",
+      "body": "Aucun montant débité. Vous pouvez réessayer.",
+      "retry": "Réessayer"
+    },
+    "pending": {
+      "title": "Paiement en attente",
+      "hint": "Cette page se mettra à jour automatiquement dès confirmation du paiement."
+    },
+    "form": {
+      "title": "Je contribue",
+      "amount": "Montant",
+      "customAmount": "Autre montant",
+      "min": "Min",
+      "max": "Max",
+      "method": "Moyen de paiement",
+      "name": "Votre nom (facultatif)",
+      "email": "Votre email (facultatif)",
+      "phone": "Numéro mobile money (requis)",
+      "anonymous": "Rester anonyme sur le mur des soutiens",
+      "message": "Un message de soutien (facultatif)",
+      "submit": "Donner"
+    },
+    "methods": {
+      "card": "Carte bancaire",
+      "mobile_money": "Mobile money",
+      "bank_transfer": "Virement",
+      "cash": "Espèces"
+    },
+    "errors": {
+      "generic": "Une erreur est survenue. Réessayez."
+    },
+    "ended": "Cette cagnotte n'accepte plus de contributions pour le moment.",
+    "supporters": {
+      "title": "Ils soutiennent"
+    },
+    "poweredBy": "Propulsé par Leopardo — Cagnottes solidaires"
   }
 }
