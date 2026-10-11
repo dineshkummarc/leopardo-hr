@@ -450,8 +450,11 @@ export function HeroBusinessOS3D({
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       // Sur petit écran on resserre la constellation pour qu'elle reste lisible.
-      const scale = Math.min(1, width / 860);
-      world.scale.setScalar(Math.max(0.62, scale));
+      // #8403 — cadrage resserré (720 au lieu de 860) : la scène remplit son
+      // cadre — retour propriétaire « qu'elle occupe tout l'espace » — tout en
+      // gardant les étiquettes des modules extérieurs dans le panneau.
+      const scale = Math.min(1, width / 720);
+      world.scale.setScalar(Math.max(0.6, scale));
     };
     resize();
     const resizeObserver = new ResizeObserver(resize);
