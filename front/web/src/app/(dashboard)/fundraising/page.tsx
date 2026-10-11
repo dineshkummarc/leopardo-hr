@@ -142,7 +142,7 @@ export default function CagnottesPage() {
   });
   const [savingSettings, setSavingSettings] = useState(false);
 
-  const genericError = useMemo(() => t(locale, 'cagnottesModule.errorGeneric', 'Une erreur est survenue.'), [locale]);
+  const genericError = useMemo(() => t(locale, 'cagnottesModule.errorGeneric'), [locale]);
 
   const loadFundraisers = useCallback(async () => {
     const response = await apiFetch('/fundraising/fundraisers');
@@ -212,7 +212,7 @@ export default function CagnottesPage() {
       });
       setShowCreate(false);
       setForm({ title: '', beneficiary_name: '', beneficiary_contact: '', description: '', category: 'other', goal_amount: '', currency: 'XOF', suggested_amounts: '', min_amount: '', max_amount: '', ends_at: '' });
-      setNotice(t(locale, 'cagnottesModule.created', 'Cagnotte créée en brouillon. Publiez-la pour obtenir son lien de collecte.'));
+      setNotice(t(locale, 'cagnottesModule.created'));
       await loadFundraisers();
     } catch (exception) {
       setError((exception as { message?: string }).message ?? genericError);
@@ -253,7 +253,7 @@ export default function CagnottesPage() {
         });
         setPayoutFor(null);
         setPayoutForm({ amount: '', method: 'mobile_money', recipient_name: '', recipient_account: '' });
-        setNotice(t(locale, 'cagnottesModule.payoutRequested', 'Reversement demandé. Suivez son traitement dans la liste des reversements.'));
+        setNotice(t(locale, 'cagnottesModule.payoutRequested'));
         await Promise.all([loadFundraisers(), loadPayouts(fundraiser.id)]);
         setExpandedPayouts(fundraiser.id);
       } catch (exception) {
@@ -297,7 +297,7 @@ export default function CagnottesPage() {
           show_supporters: settingsForm.show_supporters,
         }),
       });
-      setNotice(t(locale, 'cagnottesModule.settingsSaved', 'Paramétrage enregistré — appliqué immédiatement à la page publique.'));
+      setNotice(t(locale, 'cagnottesModule.settingsSaved'));
       await loadSettings();
     } catch (exception) {
       setError((exception as { message?: string }).message ?? genericError);
@@ -327,8 +327,8 @@ export default function CagnottesPage() {
     return (
       <main dir={dir} className="mx-auto max-w-2xl px-4 py-16 text-center">
         <Gift className="mx-auto h-10 w-10 text-slate-300" />
-        <h1 className="mt-3 text-xl font-black text-slate-950">{t(locale, 'cagnottesModule.inactive.title', 'Verticale non activée')}</h1>
-        <p className="mt-2 text-sm text-slate-500">{t(locale, 'cagnottesModule.inactive.body', 'Les Cagnottes solidaires ne sont pas activées sur cet espace. Répondez « Association / ONG » à l\'entretien de préparation ou contactez le support.')}</p>
+        <h1 className="mt-3 text-xl font-black text-slate-950">{t(locale, 'cagnottesModule.inactive.title')}</h1>
+        <p className="mt-2 text-sm text-slate-500">{t(locale, 'cagnottesModule.inactive.body')}</p>
       </main>
     );
   }
@@ -343,15 +343,15 @@ export default function CagnottesPage() {
           <Gift className="h-5 w-5" />
         </div>
         <div className="me-auto">
-          <h1 className="text-xl font-black tracking-tight text-slate-950">{t(locale, 'cagnottesModule.title', 'Cagnottes solidaires')}</h1>
-          <p className="text-sm text-slate-500">{t(locale, 'cagnottesModule.subtitle', 'Collectez par lien public — carte bancaire et mobile money — puis reversez au bénéficiaire.')}</p>
+          <h1 className="text-xl font-black tracking-tight text-slate-950">{t(locale, 'cagnottesModule.title')}</h1>
+          <p className="text-sm text-slate-500">{t(locale, 'cagnottesModule.subtitle')}</p>
         </div>
         <button
           type="button"
           onClick={() => setTab('cagnottes')}
           className={`rounded-xl px-4 py-2 text-sm font-bold ${tab === 'cagnottes' ? 'bg-slate-950 text-white' : 'border border-slate-200 bg-white text-slate-700'}`}
         >
-          {t(locale, 'cagnottesModule.tabs.cagnottes', 'Cagnottes')}
+          {t(locale, 'cagnottesModule.tabs.cagnottes')}
         </button>
         <button
           type="button"
@@ -359,7 +359,7 @@ export default function CagnottesPage() {
           className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold ${tab === 'settings' ? 'bg-slate-950 text-white' : 'border border-slate-200 bg-white text-slate-700'}`}
         >
           <Settings2 className="h-4 w-4" />
-          {t(locale, 'cagnottesModule.tabs.settings', 'Paramétrage')}
+          {t(locale, 'cagnottesModule.tabs.settings')}
         </button>
       </div>
 
@@ -375,28 +375,28 @@ export default function CagnottesPage() {
               className="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-4 py-2.5 text-sm font-black text-white shadow-lg shadow-teal-600/20 hover:bg-teal-700"
             >
               <Plus className="h-4 w-4" />
-              {t(locale, 'cagnottesModule.newCagnotte', 'Nouvelle cagnotte')}
+              {t(locale, 'cagnottesModule.newCagnotte')}
             </button>
           </div>
 
           {showCreate && (
             <div className="mb-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="text-base font-black text-slate-950">{t(locale, 'cagnottesModule.create.title', 'Créer une cagnotte')}</h2>
+              <h2 className="text-base font-black text-slate-950">{t(locale, 'cagnottesModule.create.title')}</h2>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <div className="sm:col-span-2">
-                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.titleLabel', 'Titre')} *</label>
-                  <input className={inputClass} value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder={t(locale, 'cagnottesModule.create.titlePlaceholder', 'Ex. Aide pour les frais médicaux de Fatou')} />
+                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.titleLabel')} *</label>
+                  <input className={inputClass} value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder={t(locale, 'cagnottesModule.create.titlePlaceholder')} />
                 </div>
                 <div>
-                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.beneficiary', 'Bénéficiaire')} *</label>
-                  <input className={inputClass} value={form.beneficiary_name} onChange={(e) => setForm({ ...form, beneficiary_name: e.target.value })} placeholder={t(locale, 'cagnottesModule.create.beneficiaryPlaceholder', 'Nom de la personne ou de la cause')} />
+                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.beneficiary')} *</label>
+                  <input className={inputClass} value={form.beneficiary_name} onChange={(e) => setForm({ ...form, beneficiary_name: e.target.value })} placeholder={t(locale, 'cagnottesModule.create.beneficiaryPlaceholder')} />
                 </div>
                 <div>
-                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.contact', 'Contact du bénéficiaire')}</label>
-                  <input className={inputClass} value={form.beneficiary_contact} onChange={(e) => setForm({ ...form, beneficiary_contact: e.target.value })} placeholder={t(locale, 'cagnottesModule.create.contactPlaceholder', 'Téléphone ou email (interne)')} />
+                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.contact')}</label>
+                  <input className={inputClass} value={form.beneficiary_contact} onChange={(e) => setForm({ ...form, beneficiary_contact: e.target.value })} placeholder={t(locale, 'cagnottesModule.create.contactPlaceholder')} />
                 </div>
                 <div>
-                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.category', 'Catégorie')}</label>
+                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.category')}</label>
                   <select className={inputClass} value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
                     {CATEGORIES.map((category) => (
                       <option key={category} value={category}>{t(locale, `cagnottesModule.categories.${category}`, category)}</option>
@@ -404,32 +404,32 @@ export default function CagnottesPage() {
                   </select>
                 </div>
                 <div>
-                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.goal', 'Objectif')}</label>
+                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.goal')}</label>
                   <input className={inputClass} inputMode="decimal" value={form.goal_amount} onChange={(e) => setForm({ ...form, goal_amount: e.target.value })} placeholder="500000" />
                 </div>
                 <div>
-                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.currency', 'Devise')}</label>
+                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.currency')}</label>
                   <input className={inputClass} value={form.currency} onChange={(e) => setForm({ ...form, currency: e.target.value })} maxLength={3} placeholder="XOF" />
                 </div>
                 <div>
-                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.endsAt', 'Fin de collecte')}</label>
+                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.endsAt')}</label>
                   <input className={inputClass} type="date" value={form.ends_at} onChange={(e) => setForm({ ...form, ends_at: e.target.value })} />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.suggested', 'Montants suggérés (séparés par des virgules)')}</label>
+                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.suggested')}</label>
                   <input className={inputClass} inputMode="decimal" value={form.suggested_amounts} onChange={(e) => setForm({ ...form, suggested_amounts: e.target.value })} placeholder="1000, 5000, 10000" />
                 </div>
                 <div>
-                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.min', 'Montant min')}</label>
+                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.min')}</label>
                   <input className={inputClass} inputMode="decimal" value={form.min_amount} onChange={(e) => setForm({ ...form, min_amount: e.target.value })} placeholder="100" />
                 </div>
                 <div>
-                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.max', 'Montant max')}</label>
+                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.max')}</label>
                   <input className={inputClass} inputMode="decimal" value={form.max_amount} onChange={(e) => setForm({ ...form, max_amount: e.target.value })} placeholder="1000000" />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.description', 'Description')}</label>
-                  <textarea className={inputClass} rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder={t(locale, 'cagnottesModule.create.descriptionPlaceholder', 'Racontez l\'histoire de cette cagnotte — c\'est ce que verront les contributeurs.')} />
+                  <label className={labelClass}>{t(locale, 'cagnottesModule.create.description')}</label>
+                  <textarea className={inputClass} rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder={t(locale, 'cagnottesModule.create.descriptionPlaceholder')} />
                 </div>
               </div>
               <div className="mt-4 flex gap-2">
@@ -440,10 +440,10 @@ export default function CagnottesPage() {
                   className="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-4 py-2.5 text-sm font-black text-white hover:bg-teal-700 disabled:opacity-40"
                 >
                   {creating && <Loader2 className="h-4 w-4 animate-spin" />}
-                  {t(locale, 'cagnottesModule.create.submit', 'Créer le brouillon')}
+                  {t(locale, 'cagnottesModule.create.submit')}
                 </button>
                 <button type="button" onClick={() => setShowCreate(false)} className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700">
-                  {t(locale, 'cagnottesModule.cancel', 'Annuler')}
+                  {t(locale, 'cagnottesModule.cancel')}
                 </button>
               </div>
             </div>
@@ -452,7 +452,7 @@ export default function CagnottesPage() {
           {fundraisers.length === 0 && !showCreate && (
             <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center">
               <Gift className="mx-auto h-10 w-10 text-slate-300" />
-              <p className="mt-3 text-sm font-bold text-slate-500">{t(locale, 'cagnottesModule.empty', 'Aucune cagnotte pour l\'instant — créez la première et partagez son lien.')}</p>
+              <p className="mt-3 text-sm font-bold text-slate-500">{t(locale, 'cagnottesModule.empty')}</p>
             </div>
           )}
 
@@ -468,7 +468,7 @@ export default function CagnottesPage() {
                       </span>
                     </div>
                     <p className="mt-0.5 text-xs text-slate-500">
-                      {fundraiser.category_label} · {t(locale, 'cagnottesModule.for', 'Pour')} {fundraiser.beneficiary_name}
+                      {fundraiser.category_label} · {t(locale, 'cagnottesModule.for')} {fundraiser.beneficiary_name}
                     </p>
                   </div>
                   <div className="text-end">
@@ -477,7 +477,7 @@ export default function CagnottesPage() {
                       {fundraiser.goal_amount !== null && <span className="text-xs font-bold text-slate-400"> / {money(fundraiser.goal_amount, fundraiser.currency, locale)}</span>}
                     </p>
                     <p className="text-[11px] font-bold text-slate-400">
-                      {fundraiser.contributions_count} {t(locale, 'cagnottesModule.contributions', 'contributions')} · {t(locale, 'cagnottesModule.available', 'disponible')} : {money(fundraiser.available_balance, fundraiser.currency, locale)}
+                      {fundraiser.contributions_count} {t(locale, 'cagnottesModule.contributions')} · {t(locale, 'cagnottesModule.available')} : {money(fundraiser.available_balance, fundraiser.currency, locale)}
                     </p>
                   </div>
                 </div>
@@ -486,36 +486,36 @@ export default function CagnottesPage() {
                   {fundraiser.status === 'draft' && (
                     <button type="button" onClick={() => void transition(fundraiser, 'publish')} disabled={actionBusy !== null} className="inline-flex items-center gap-1.5 rounded-xl bg-teal-600 px-3 py-2 text-xs font-black text-white hover:bg-teal-700">
                       {actionBusy === `${fundraiser.id}:publish` ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Play className="h-3.5 w-3.5" />}
-                      {t(locale, 'cagnottesModule.actions.publish', 'Publier')}
+                      {t(locale, 'cagnottesModule.actions.publish')}
                     </button>
                   )}
                   {fundraiser.status === 'active' && (
                     <button type="button" onClick={() => void transition(fundraiser, 'pause')} disabled={actionBusy !== null} className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-black text-slate-700 hover:border-amber-300">
                       {actionBusy === `${fundraiser.id}:pause` ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Pause className="h-3.5 w-3.5" />}
-                      {t(locale, 'cagnottesModule.actions.pause', 'Mettre en pause')}
+                      {t(locale, 'cagnottesModule.actions.pause')}
                     </button>
                   )}
                   {fundraiser.status === 'paused' && (
                     <button type="button" onClick={() => void transition(fundraiser, 'publish')} disabled={actionBusy !== null} className="inline-flex items-center gap-1.5 rounded-xl bg-teal-600 px-3 py-2 text-xs font-black text-white hover:bg-teal-700">
                       {actionBusy === `${fundraiser.id}:publish` ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Play className="h-3.5 w-3.5" />}
-                      {t(locale, 'cagnottesModule.actions.resume', 'Reprendre')}
+                      {t(locale, 'cagnottesModule.actions.resume')}
                     </button>
                   )}
                   {(fundraiser.status === 'active' || fundraiser.status === 'paused' || fundraiser.status === 'completed') && (
                     <button type="button" onClick={() => void transition(fundraiser, 'close')} disabled={actionBusy !== null} className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-black text-slate-700 hover:border-red-300">
                       <XCircle className="h-3.5 w-3.5" />
-                      {t(locale, 'cagnottesModule.actions.close', 'Clôturer')}
+                      {t(locale, 'cagnottesModule.actions.close')}
                     </button>
                   )}
                   {(fundraiser.status === 'active' || fundraiser.status === 'paused' || fundraiser.status === 'completed') && (
                     <>
                       <button type="button" onClick={() => copyPublicLink(fundraiser)} className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-black text-slate-700 hover:border-teal-300">
                         {copiedSlug === fundraiser.slug ? <Check className="h-3.5 w-3.5 text-teal-600" /> : <Copy className="h-3.5 w-3.5" />}
-                        {copiedSlug === fundraiser.slug ? t(locale, 'cagnottesModule.copied', 'Lien copié !') : t(locale, 'cagnottesModule.copyLink', 'Copier le lien de collecte')}
+                        {copiedSlug === fundraiser.slug ? t(locale, 'cagnottesModule.copied') : t(locale, 'cagnottesModule.copyLink')}
                       </button>
                       <a href={fundraiser.public_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-black text-slate-700 hover:border-teal-300">
                         <ExternalLink className="h-3.5 w-3.5" />
-                        {t(locale, 'cagnottesModule.viewPublic', 'Voir la page publique')}
+                        {t(locale, 'cagnottesModule.viewPublic')}
                       </a>
                     </>
                   )}
@@ -529,7 +529,7 @@ export default function CagnottesPage() {
                       className="inline-flex items-center gap-1.5 rounded-xl bg-slate-950 px-3 py-2 text-xs font-black text-white"
                     >
                       <Wallet className="h-3.5 w-3.5" />
-                      {t(locale, 'cagnottesModule.actions.payout', 'Reverser les fonds')}
+                      {t(locale, 'cagnottesModule.actions.payout')}
                     </button>
                   )}
                   <button
@@ -541,20 +541,20 @@ export default function CagnottesPage() {
                     }}
                     className="ms-auto text-xs font-bold text-slate-400 underline"
                   >
-                    {expandedPayouts === fundraiser.id ? t(locale, 'cagnottesModule.hidePayouts', 'Masquer les reversements') : t(locale, 'cagnottesModule.showPayouts', 'Reversements')}
+                    {expandedPayouts === fundraiser.id ? t(locale, 'cagnottesModule.hidePayouts') : t(locale, 'cagnottesModule.showPayouts')}
                   </button>
                 </div>
 
                 {payoutFor === fundraiser.id && (
                   <div className="mt-4 rounded-2xl bg-slate-50 p-4">
-                    <h4 className="text-sm font-black text-slate-950">{t(locale, 'cagnottesModule.payout.title', 'Demande de reversement')}</h4>
+                    <h4 className="text-sm font-black text-slate-950">{t(locale, 'cagnottesModule.payout.title')}</h4>
                     <div className="mt-3 grid gap-3 sm:grid-cols-2">
                       <div>
-                        <label className={labelClass}>{t(locale, 'cagnottesModule.payout.amount', 'Montant')} *</label>
+                        <label className={labelClass}>{t(locale, 'cagnottesModule.payout.amount')} *</label>
                         <input className={inputClass} inputMode="decimal" value={payoutForm.amount} onChange={(e) => setPayoutForm({ ...payoutForm, amount: e.target.value })} />
                       </div>
                       <div>
-                        <label className={labelClass}>{t(locale, 'cagnottesModule.payout.method', 'Moyen de reversement')}</label>
+                        <label className={labelClass}>{t(locale, 'cagnottesModule.payout.method')}</label>
                         <select className={inputClass} value={payoutForm.method} onChange={(e) => setPayoutForm({ ...payoutForm, method: e.target.value })}>
                           {PAYOUT_METHODS.map((method) => (
                             <option key={method} value={method}>{t(locale, `cagnottesModule.payoutMethods.${method}`, method)}</option>
@@ -562,11 +562,11 @@ export default function CagnottesPage() {
                         </select>
                       </div>
                       <div>
-                        <label className={labelClass}>{t(locale, 'cagnottesModule.payout.recipient', 'Nom du bénéficiaire')} *</label>
+                        <label className={labelClass}>{t(locale, 'cagnottesModule.payout.recipient')} *</label>
                         <input className={inputClass} value={payoutForm.recipient_name} onChange={(e) => setPayoutForm({ ...payoutForm, recipient_name: e.target.value })} />
                       </div>
                       <div>
-                        <label className={labelClass}>{t(locale, 'cagnottesModule.payout.account', 'Compte / numéro')} *</label>
+                        <label className={labelClass}>{t(locale, 'cagnottesModule.payout.account')} *</label>
                         <input className={inputClass} value={payoutForm.recipient_account} onChange={(e) => setPayoutForm({ ...payoutForm, recipient_account: e.target.value })} placeholder="+221… / IBAN" />
                       </div>
                     </div>
@@ -578,10 +578,10 @@ export default function CagnottesPage() {
                         className="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-4 py-2 text-xs font-black text-white hover:bg-teal-700 disabled:opacity-40"
                       >
                         {actionBusy === `${fundraiser.id}:payout` && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-                        {t(locale, 'cagnottesModule.payout.submit', 'Envoyer la demande')}
+                        {t(locale, 'cagnottesModule.payout.submit')}
                       </button>
                       <button type="button" onClick={() => setPayoutFor(null)} className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-slate-700">
-                        {t(locale, 'cagnottesModule.cancel', 'Annuler')}
+                        {t(locale, 'cagnottesModule.cancel')}
                       </button>
                     </div>
                   </div>
@@ -590,7 +590,7 @@ export default function CagnottesPage() {
                 {expandedPayouts === fundraiser.id && (
                   <div className="mt-4">
                     {(payouts[fundraiser.id] ?? []).length === 0 ? (
-                      <p className="text-xs text-slate-400">{t(locale, 'cagnottesModule.payout.empty', 'Aucun reversement pour cette cagnotte.')}</p>
+                      <p className="text-xs text-slate-400">{t(locale, 'cagnottesModule.payout.empty')}</p>
                     ) : (
                       <ul className="space-y-2">
                         {(payouts[fundraiser.id] ?? []).map((payout) => (
@@ -605,7 +605,7 @@ export default function CagnottesPage() {
                                 disabled={actionBusy !== null}
                                 className="ms-auto rounded-lg bg-teal-600 px-2.5 py-1 font-black text-white hover:bg-teal-700"
                               >
-                                {actionBusy === `payout:${payout.id}` ? <Loader2 className="h-3 w-3 animate-spin" /> : t(locale, 'cagnottesModule.payout.markPaid', 'Marquer versé')}
+                                {actionBusy === `payout:${payout.id}` ? <Loader2 className="h-3 w-3 animate-spin" /> : t(locale, 'cagnottesModule.payout.markPaid')}
                               </button>
                             )}
                           </li>
@@ -622,11 +622,11 @@ export default function CagnottesPage() {
 
       {tab === 'settings' && settings !== null && (
         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-base font-black text-slate-950">{t(locale, 'cagnottesModule.settings.title', 'Paramétrage du module')}</h2>
-          <p className="mt-1 text-xs text-slate-500">{t(locale, 'cagnottesModule.settings.hint', 'Appliqué immédiatement à toutes vos cagnottes et à la page publique de don.')}</p>
+          <h2 className="text-base font-black text-slate-950">{t(locale, 'cagnottesModule.settings.title')}</h2>
+          <p className="mt-1 text-xs text-slate-500">{t(locale, 'cagnottesModule.settings.hint')}</p>
 
           <div className="mt-5">
-            <label className={labelClass}>{t(locale, 'cagnottesModule.settings.methods', 'Moyens de paiement offerts')}</label>
+            <label className={labelClass}>{t(locale, 'cagnottesModule.settings.methods')}</label>
             <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
               {METHODS.map((method) => {
                 const enabled = settingsForm.enabled_methods.includes(method);
@@ -653,15 +653,15 @@ export default function CagnottesPage() {
 
           <div className="mt-5 grid gap-3 sm:grid-cols-3">
             <div>
-              <label className={labelClass}>{t(locale, 'cagnottesModule.settings.minDefault', 'Montant min par défaut')}</label>
+              <label className={labelClass}>{t(locale, 'cagnottesModule.settings.minDefault')}</label>
               <input className={inputClass} inputMode="decimal" value={settingsForm.default_min_amount} onChange={(e) => setSettingsForm({ ...settingsForm, default_min_amount: e.target.value })} placeholder="100" />
             </div>
             <div>
-              <label className={labelClass}>{t(locale, 'cagnottesModule.settings.maxDefault', 'Montant max par défaut')}</label>
+              <label className={labelClass}>{t(locale, 'cagnottesModule.settings.maxDefault')}</label>
               <input className={inputClass} inputMode="decimal" value={settingsForm.default_max_amount} onChange={(e) => setSettingsForm({ ...settingsForm, default_max_amount: e.target.value })} placeholder="10000000" />
             </div>
             <div>
-              <label className={labelClass}>{t(locale, 'cagnottesModule.settings.suggestedDefault', 'Montants suggérés par défaut')}</label>
+              <label className={labelClass}>{t(locale, 'cagnottesModule.settings.suggestedDefault')}</label>
               <input className={inputClass} inputMode="decimal" value={settingsForm.default_suggested_amounts} onChange={(e) => setSettingsForm({ ...settingsForm, default_suggested_amounts: e.target.value })} placeholder="1000, 5000, 10000" />
             </div>
           </div>
@@ -691,7 +691,7 @@ export default function CagnottesPage() {
             className="mt-5 inline-flex items-center gap-2 rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-black text-white hover:bg-teal-700 disabled:opacity-40"
           >
             {savingSettings && <Loader2 className="h-4 w-4 animate-spin" />}
-            {t(locale, 'cagnottesModule.settings.save', 'Enregistrer le paramétrage')}
+            {t(locale, 'cagnottesModule.settings.save')}
           </button>
         </div>
       )}
