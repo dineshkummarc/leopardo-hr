@@ -13,6 +13,7 @@
  * SolutionStack, artworks) — déplacée, pas supprimée.
  */
 
+import Link from 'next/link';
 import { Cloud, Server, ShieldCheck } from 'lucide-react';
 import type { AppLocale } from '@/lib/i18n';
 import { HeroProductVisual } from '@/modules/vitrine/components/sections/HeroProductVisual';
@@ -47,7 +48,7 @@ export function HeroTrustBadge({ locale }: HeroProductShowcaseProps) {
   const label = BADGE_LABEL[locale] ?? BADGE_LABEL.fr;
   const note = BADGE_NOTE[locale] ?? BADGE_NOTE.fr;
   return (
-    <a
+    <Link
       href="/pricing"
       aria-label={label}
       data-testid="hero-trust-badge"
@@ -62,7 +63,7 @@ export function HeroTrustBadge({ locale }: HeroProductShowcaseProps) {
         <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" aria-hidden="true" />
         {note}
       </span>
-    </a>
+    </Link>
   );
 }
 
