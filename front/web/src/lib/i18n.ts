@@ -128,6 +128,8 @@ export type CopyTree = {
       communication: string;
       /** BOS-035 (#8224) — module Assistant Leo IA (libellé localisé du menu) */
       assistant: string;
+      /** BC-35 VTC (#8349, VTC-07/#8363) — verticale VTC/taxi (console dispatch) */
+      vtc: string;
     };
     /** #7225 — « Entreprise » (bandeau horizontal transverse) */
     sectionEnterprise: string;
@@ -807,6 +809,7 @@ const copy: Record<AppLocale, CopyTree> = {
         commerce: 'Commerce',
         communication: 'Communication',
         assistant: 'Assistant IA',
+        vtc: 'VTC & taxi',
       },
       sectionEnterprise: 'Entreprise',
       sectionModules: 'Modules & plan',
@@ -1511,6 +1514,7 @@ const copy: Record<AppLocale, CopyTree> = {
         commerce: 'التجارة',
         communication: 'التواصل',
         assistant: 'المساعد الذكي',
+        vtc: 'النقل الخاص والتاكسي',
       },
       sectionEnterprise: 'الشركة',
       sectionModules: 'الوحدات والخطة',
@@ -2211,6 +2215,7 @@ const copy: Record<AppLocale, CopyTree> = {
         commerce: 'Ticaret',
         communication: 'İletişim',
         assistant: 'YZ Asistanı',
+        vtc: 'VTC ve taksi',
       },
       sectionEnterprise: 'Şirket',
       sectionModules: 'Modüller ve plan',
@@ -2911,6 +2916,7 @@ const copy: Record<AppLocale, CopyTree> = {
         commerce: 'Commerce',
         communication: 'Communication',
         assistant: 'AI Assistant',
+        vtc: 'Ride-hailing & taxi',
       },
       sectionEnterprise: 'Company',
       sectionModules: 'Modules & plan',

@@ -1,6 +1,6 @@
 {
   "_version": "1.0.0",
-  "_updated_at": "2026-09-28T09:00:00Z",
+  "_updated_at": "2026-10-11T00:00:00Z",
   "_locale": "ar",
   "app": {
     "title": "ليوباردو — حزمة الأعمال"
@@ -6253,6 +6253,7 @@
           "commerce": "تجارة",
           "services": "خدمات",
           "travel": "وكالة سفر",
+          "association": "جمعية / منظمة غير حكومية",
           "other": "قطاعي غير مدرج"
         }
       },
@@ -7231,6 +7232,114 @@
         "no_show": "لم يحضر"
       }
     }
+  },
+  "cagnotte": {
+    "loading": "جارٍ التحميل…",
+    "notFound": {
+      "title": "لم يتم العثور على الحملة",
+      "body": "هذا الرابط لا يطابق أي حملة تبرع نشطة. يرجى التحقق من الرابط المشترك."
+    },
+    "for": "لفائدة",
+    "contributors": "مساهمون",
+    "share": {
+      "copy": "نسخ الرابط",
+      "copied": "تم نسخ الرابط!",
+      "qr": "رمز QR",
+      "qrAlt": "رمز QR لرابط الحملة",
+      "hint": "شارك هذا الرابط"
+    },
+    "success": {
+      "title": "شكراً لتبرعك!",
+      "body": "تم تسجيل مساهمتك بنجاح."
+    },
+    "reference": "المرجع",
+    "failed": {
+      "title": "فشل الدفع",
+      "body": "لم يتم خصم أي مبلغ. يمكنك المحاولة مرة أخرى.",
+      "retry": "إعادة المحاولة"
+    },
+    "pending": {
+      "title": "الدفع قيد الانتظار",
+      "hint": "سيتم تحديث هذه الصفحة تلقائياً فور تأكيد الدفع."
+    },
+    "form": {
+      "title": "أساهم",
+      "amount": "المبلغ",
+      "customAmount": "مبلغ آخر",
+      "min": "الحد الأدنى",
+      "max": "الحد الأقصى",
+      "method": "وسيلة الدفع",
+      "name": "اسمك (اختياري)",
+      "email": "بريدك الإلكتروني (اختياري)",
+      "phone": "رقم الموبايل موني (مطلوب)",
+      "anonymous": "البقاء مجهولاً في قائمة الداعمين",
+      "message": "رسالة دعم (اختياري)",
+      "submit": "تبرع"
+    },
+    "methods": {
+      "card": "بطاقة بنكية",
+      "mobile_money": "موبايل موني",
+      "bank_transfer": "تحويل بنكي",
+      "cash": "نقداً"
+    },
+    "errors": {
+      "generic": "حدث خطأ. حاول مرة أخرى."
+    },
+    "ended": "هذه الحملة لا تقبل المساهمات حالياً.",
+    "supporters": {
+      "title": "الداعمون"
+    },
+    "poweredBy": "مدعوم من Leopardo — حملات تضامن",
+    "meta": {
+      "genericTitle": "حملة تضامن — Leopardo",
+      "genericDescription": "ادعم قضية في ثوانٍ: تبرع بالبطاقة البنكية أو الموبايل موني.",
+      "titleSuffix": "حملة تضامن"
+    }
+  },
+  "vtc": {
+    "title": "النقل الخاص والتاكسي",
+    "subtitle": "توزيع الرحلات وتتبع السائقين في الوقت الحقيقي",
+    "rides": "الرحلات",
+    "drivers": "السائقون",
+    "openDrivers": "عرض السائقين",
+    "openRides": "عرض الرحلات",
+    "rideCount": "رحلة/رحلات نشطة",
+    "driverCount": "سائق/سائقون",
+    "loading": "جارٍ التحميل…",
+    "retry": "تحديث",
+    "autoRefresh": "تحديث تلقائي كل 15 ثانية",
+    "loadError": "تعذر تحميل لوحة توزيع الرحلات",
+    "moduleDisabled": "وحدة النقل الخاص غير مفعّلة لهذه الشركة.",
+    "emptyRides": "لا توجد رحلات نشطة",
+    "emptyRidesHint": "ستظهر هنا الرحلات المطلوبة عبر واجهة الركاب في الوقت الحقيقي.",
+    "emptyDrivers": "لا يوجد سائقون مسجلون",
+    "emptyDriversHint": "تُنشأ ملفات السائقين من واجهة الإدارة (POST /vtc/drivers).",
+    "reference": "المرجع",
+    "pickup": "نقطة الانطلاق",
+    "dropoff": "الوجهة",
+    "driver": "السائق",
+    "pendingOffer": "عرض قيد الانتظار",
+    "unassigned": "غير معيّن",
+    "estimatedPrice": "السعر التقديري",
+    "requestedAt": "طُلبت في",
+    "lastPosition": "آخر موقع",
+    "positionUnavailable": "لا يوجد موقع مسجل",
+    "updatedAt": "آخر تحديث",
+    "vehicle": "المركبة",
+    "phone": "الهاتف",
+    "statusRequested": "مطلوبة",
+    "statusDispatching": "قيد التوزيع",
+    "statusAccepted": "مقبولة",
+    "statusArrived": "وصل السائق",
+    "statusInProgress": "قيد التنفيذ",
+    "statusCompleted": "مكتملة",
+    "statusExpired": "منتهية",
+    "statusCancelled": "ملغاة",
+    "statusUnknown": "حالة غير معروفة",
+    "driverOffline": "غير متصل",
+    "driverAvailable": "متاح",
+    "driverBusy": "في رحلة",
+    "driverSuspended": "موقوف"
   },
   "cagnottesModule": {
     "title": "حملات التضامن",

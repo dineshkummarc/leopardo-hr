@@ -1,6 +1,6 @@
 {
   "_version": "1.0.0",
-  "_updated_at": "2026-09-28T09:00:00Z",
+  "_updated_at": "2026-10-11T00:00:00Z",
   "_locale": "tr",
   "app": {
     "title": "Leopardo — İşletme Yönetimi Paketi"
@@ -6253,6 +6253,7 @@
           "commerce": "Ticaret",
           "services": "Hizmetler",
           "travel": "Seyahat acentesi",
+          "association": "Dernek / STK",
           "other": "Sektörüm listede yok"
         }
       },
@@ -7231,6 +7232,114 @@
         "no_show": "Gelmedi"
       }
     }
+  },
+  "cagnotte": {
+    "loading": "Yükleniyor…",
+    "notFound": {
+      "title": "Bağış kampanyası bulunamadı",
+      "body": "Bu bağlantı aktif bir kampanya ile eşleşmiyor. Paylaşılan bağlantıyı kontrol edin."
+    },
+    "for": "Yararına",
+    "contributors": "katkıda bulunan",
+    "share": {
+      "copy": "Bağlantıyı kopyala",
+      "copied": "Bağlantı kopyalandı!",
+      "qr": "QR kodu",
+      "qrAlt": "Kampanya bağlantısının QR kodu",
+      "hint": "Bu bağlantıyı paylaşın"
+    },
+    "success": {
+      "title": "Bağışınız için teşekkürler!",
+      "body": "Katkınız başarıyla kaydedildi."
+    },
+    "reference": "Referans",
+    "failed": {
+      "title": "Ödeme başarısız",
+      "body": "Herhangi bir tutar tahsil edilmedi. Tekrar deneyebilirsiniz.",
+      "retry": "Tekrar dene"
+    },
+    "pending": {
+      "title": "Ödeme bekleniyor",
+      "hint": "Ödeme onaylandığında bu sayfa otomatik olarak güncellenecektir."
+    },
+    "form": {
+      "title": "Katkıda bulun",
+      "amount": "Tutar",
+      "customAmount": "Diğer tutar",
+      "min": "Min",
+      "max": "Maks",
+      "method": "Ödeme yöntemi",
+      "name": "Adınız (isteğe bağlı)",
+      "email": "E-postanız (isteğe bağlı)",
+      "phone": "Mobil para numarası (gerekli)",
+      "anonymous": "Destekçi duvarında anonim kal",
+      "message": "Destek mesajı (isteğe bağlı)",
+      "submit": "Bağış yap"
+    },
+    "methods": {
+      "card": "Banka kartı",
+      "mobile_money": "Mobil para",
+      "bank_transfer": "Havale",
+      "cash": "Nakit"
+    },
+    "errors": {
+      "generic": "Bir hata oluştu. Tekrar deneyin."
+    },
+    "ended": "Bu kampanya şu anda katkı kabul etmiyor.",
+    "supporters": {
+      "title": "Destekçiler"
+    },
+    "poweredBy": "Leopardo tarafından — Dayanışma kampanyaları",
+    "meta": {
+      "genericTitle": "Dayanışma kampanyası — Leopardo",
+      "genericDescription": "Bir amacı saniyeler içinde destekleyin: banka kartı veya mobil para ile bağış yapın.",
+      "titleSuffix": "Dayanışma kampanyası"
+    }
+  },
+  "vtc": {
+    "title": "VTC & taksi",
+    "subtitle": "Yolculuk ataması ve gerçek zamanlı sürücü takibi",
+    "rides": "Yolculuklar",
+    "drivers": "Sürücüler",
+    "openDrivers": "Sürücüleri gör",
+    "openRides": "Yolculukları gör",
+    "rideCount": "aktif yolculuk",
+    "driverCount": "sürücü",
+    "loading": "Yükleniyor…",
+    "retry": "Yenile",
+    "autoRefresh": "15 sn’de bir otomatik yenileme",
+    "loadError": "VTC atama panosu yüklenemedi",
+    "moduleDisabled": "VTC modülü bu şirket için etkin değil.",
+    "emptyRides": "Aktif yolculuk yok",
+    "emptyRidesHint": "Yolcu API’sinden istenen yolculuklar burada gerçek zamanlı görünecek.",
+    "emptyDrivers": "Kayıtlı sürücü yok",
+    "emptyDriversHint": "Sürücü kayıtları yönetici API’sinden oluşturulur (POST /vtc/drivers).",
+    "reference": "Referans",
+    "pickup": "Alış noktası",
+    "dropoff": "Varış noktası",
+    "driver": "Sürücü",
+    "pendingOffer": "Bekleyen teklif",
+    "unassigned": "Atanmadı",
+    "estimatedPrice": "Tahmini ücret",
+    "requestedAt": "İsteme zamanı",
+    "lastPosition": "Son konum",
+    "positionUnavailable": "Konum bildirilmedi",
+    "updatedAt": "Son güncelleme",
+    "vehicle": "Araç",
+    "phone": "Telefon",
+    "statusRequested": "İstendi",
+    "statusDispatching": "Atanıyor",
+    "statusAccepted": "Kabul edildi",
+    "statusArrived": "Sürücü geldi",
+    "statusInProgress": "Devam ediyor",
+    "statusCompleted": "Tamamlandı",
+    "statusExpired": "Süresi doldu",
+    "statusCancelled": "İptal edildi",
+    "statusUnknown": "Bilinmeyen durum",
+    "driverOffline": "Çevrimdışı",
+    "driverAvailable": "Müsait",
+    "driverBusy": "Yolculukta",
+    "driverSuspended": "Askıya alındı"
   },
   "cagnottesModule": {
     "title": "Dayanışma kampanyaları",
