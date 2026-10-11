@@ -108,8 +108,11 @@ export function HeroSection({
 
       {/* Fond vivant : constellation WebGL « Business OS » si possible,
           champ de particules 2D sinon (même rôle, deux niveaux d'exigence).
-          Désactivable (#8389) quand la scène est placée en colonne visuelle. */}
-      {animated && backgroundScene && <HeroScene3D />}
+          Désactivable (#8389) quand la scène est placée en colonne visuelle.
+          #8410 — TOUJOURS estompée en fond : le texte du héro reste lisible
+          sur toutes les pages (clair et sombre), la 3D ne passe plus jamais
+          « devant » le propos. */}
+      {animated && backgroundScene && <HeroScene3D dimmed />}
 
       {/* Gradient orbs */}
       <div className="absolute top-1/4 -left-32 w-[500px] h-[500px] bg-emerald-400/15 rounded-full blur-[120px] animate-pulse" />
