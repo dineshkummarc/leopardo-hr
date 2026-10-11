@@ -128,15 +128,16 @@ export function HeroSection({
         <div
           className={
             isSplit
-              ? // #8403 — la colonne visuelle (constellation 3D) s'élargit et
-                // s'aligne en HAUT avec le récit : la 3D porte la première
+              ? // #8403 — la colonne visuelle (constellation 3D) s'élargit
+                // (ratio 2:3 via grid-cols-5 — tokens standard, garde i18n)
+                // et s'aligne en HAUT avec le récit : la 3D porte la première
                 // page, au niveau du texte de gauche, pas centrée mollement.
-                'grid grid-cols-1 items-center gap-14 lg:grid-cols-[0.92fr_1.08fr] lg:items-start lg:gap-10 xl:gap-12'
+                'grid grid-cols-1 items-center gap-14 lg:grid-cols-5 lg:items-start lg:gap-10 xl:gap-12'
               : 'mx-auto max-w-5xl'
           }
         >
           {/* ── Colonne « récit » ─────────────────────────────────────── */}
-          <div className={align}>
+          <div className={isSplit ? `${align} lg:col-span-2` : align}>
             {badgeConfig && (
               <motion.div
                 initial={animated ? { y: 20, filter: 'blur(10px)' } : {}}
@@ -251,7 +252,7 @@ export function HeroSection({
                 transition={{ duration: 1, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
                 // #8403 — léger retrait vers le haut : la constellation
                 // « monte » au niveau du badge/titre de gauche.
-                className="w-full lg:-mt-8"
+                className="w-full lg:-mt-8 lg:col-span-3"
               >
                 {visual}
               </motion.div>
