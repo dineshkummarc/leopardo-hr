@@ -26,7 +26,7 @@ function pill(key: ClientModuleKey): NavModule {
  * `group` du catalogue (seule source de vérité) : Tableau de bord · Rapports ·
  * RH ▾ (Employés · Pointages · Sessions GPS · Absences · Contrats ·
  * Formations · Paie) · Finance ▾ (Comptabilité) · Clients & croissance ▾
- * (CRM · Marketing · Site vitrine · Programme Partenaire) · Opérations ▾
+ * (CRM · Marketing · Site vitrine · Cagnottes · Programme Partenaire) · Opérations ▾
  * (Flotte · Caméras).
  */
 describe('dashboard-nav — menu une ligne + sous-menus de groupe (#7328/#7724)', () => {
@@ -114,7 +114,7 @@ describe('dashboard-nav — menu une ligne + sous-menus de groupe (#7328/#7724)'
 
   it('groupes cibles du catalogue : Finance, Clients & croissance, Opérations', () => {
     expect(navGroupKeys('finance')).toEqual(['accounting']);
-    expect(navGroupKeys('growth')).toEqual(['crm', 'marketing', 'showcase', 'partner']);
+    expect(navGroupKeys('growth')).toEqual(['crm', 'marketing', 'showcase', 'fundraising', 'partner']);
     expect(navGroupKeys('operations')).toEqual(['fleet', 'cameras']);
   });
 

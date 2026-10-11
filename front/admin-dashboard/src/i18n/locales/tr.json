@@ -1055,7 +1055,8 @@
       "restaurant": "Restoran",
       "travelagency": "Seyahat acentesi",
       "accounting": "Muhasebe",
-      "company_showcase": "Tanıtım sitesi"
+      "company_showcase": "Tanıtım sitesi",
+      "fundraising": "Dayanışma kampanyaları"
     },
     "tabOverview": "Genel bakış",
     "tabModules": "Modüller ve dikeyler",
@@ -2329,7 +2330,7 @@
       "toggleAria": "Faturalama dönemini değiştir",
       "fullComparison": "Tam karsilastirmayi gorun",
       "reassurance": "Kredi kartı yok · İstediğinizde iptal",
-      "selfHostNote": "Ya da Leopardo’yu ücretsiz kendi sunucunuzda barındırın — %100 açık kaynak"
+      "selfHostNote": "Ya da Leopardo’yu ücretsiz kendi sunucunuzda barındırın — verileriniz sizde"
     },
     "card": {
       "periodDefault": "/ay",
@@ -2979,7 +2980,7 @@
     }
   },
   "settingsBiometricNotesTitle": "Biyometri notu",
-  "_updated_at": "2026-09-28T09:00:00Z",
+  "_updated_at": "2026-10-11T00:00:00Z",
   "settingsLastNameLabel": "Soyad",
   "dashboardActiveLabel": "Aktif şirketler",
   "attendanceRetry": "Tekrar dene",
@@ -5566,6 +5567,7 @@
     "accountingSettings": "Muhasebe — Ayarlar",
     "fuelStation": "Akaryakıt istasyonları",
     "travelAgency": "Seyahat acentesi",
+    "fundraising": "Dayanışma kampanyaları",
     "surveyStats": "Çözüm anketleri",
     "solutionSurveys": "Çözüm anketleri",
     "travel": "Seyahat acentesi",
@@ -5679,6 +5681,40 @@
   "attendanceDailyEstimate": "Tahmini günlük kazanç",
   "back": "Geri",
   "settingsRecoveryEmailLabel": "Kurtarma e-postası",
+  "fundraising": {
+    "settings": {
+      "title": "Dayanışma kampanyaları — Ayarlar",
+      "subtitle": "Kampanyalarınız için ödeme yöntemleri, tutar sınırları ve herkese açık sayfa seçenekleri.",
+      "disabled_title": "Bağış kampanyası modülü etkin değil",
+      "disabled_body": "Bu kiracı için fundraising bayrağı etkin değil. Etkinleştirmek için bir platform yöneticisine başvurun.",
+      "payments_title": "Sunulan ödeme yöntemleri",
+      "payments_subtitle": "Katkıda bulunanlar kampanyanın herkese açık sayfasında yalnızca işaretli yöntemleri görür.",
+      "method_card": "Banka kartı (Stripe)",
+      "method_mobile_money": "Mobil para (Orange, MTN, Wave, Moov)",
+      "method_bank_transfer": "Banka havalesi (manuel onay)",
+      "method_cash": "Nakit (manuel onay)",
+      "methods_required": "En az bir ödeme yöntemi seçin.",
+      "limits_title": "Tutar sınırları",
+      "limits_subtitle": "Kampanya kendi sınırlarını belirlemediğinde uygulanan varsayılanlar.",
+      "default_min_amount": "Varsayılan minimum tutar",
+      "default_max_amount": "Varsayılan maksimum tutar",
+      "suggested_title": "Varsayılan önerilen tutarlar",
+      "suggested_subtitle": "Kampanya oluştururken önceden doldurulur (kampanya başına düzenlenebilir).",
+      "suggested_hint": "Kampanyanın para biriminde, virgülle ayrılmış tutarlar.",
+      "public_title": "Herkese açık yüzey",
+      "public_subtitle": "Katkıda bulunanların herkese açık bağlantıda yapabilecekleri ve görebilecekleri.",
+      "allow_anonymous": "Anonim katkılar",
+      "allow_anonymous_hint": "Katkıda bulunanın adı destekçi duvarında görünmez.",
+      "allow_messages": "Katkı mesajları",
+      "allow_messages_hint": "Her katkıya bir destek mesajı eşlik edebilir.",
+      "show_supporters": "Herkese açık destekçi duvarı",
+      "show_supporters_hint": "Onaylanan katkıların listesi herkese açık bağlantıda görünür.",
+      "save": "Ayarları kaydet",
+      "saved": "Ayarlar kaydedildi.",
+      "load_error": "Ayarlar yüklenemedi.",
+      "save_error": "Ayarlar kaydedilemedi."
+    }
+  },
   "travel": {
     "loading": "Yükleniyor…",
     "section": {
@@ -7617,7 +7653,8 @@
           "commerce": "Ticaret",
           "services": "Hizmetler",
           "travel": "Seyahat acentesi",
-          "other": "Sektörüm listede yok"
+          "other": "Sektörüm listede yok",
+          "association": "Dernek / STK"
         }
       },
       "premises": {
@@ -7779,7 +7816,19 @@
       "faq": "SSS",
       "faqDesc": "Sık sorulan sorular",
       "support": "Destek",
-      "supportDesc": "Ekibimize ulaşın"
+      "supportDesc": "Ekibimize ulaşın",
+      "packs": "Ücretsiz paketler",
+      "packsHub": "Tüm paketler",
+      "packsHubDesc": "Her sektöre ücretsiz paket — teklifi keşfedin",
+      "packsRestaurant": "Restoranlar",
+      "packsRestaurantDesc": "Kasa, mutfak, rezervasyon — 3 soruda paket",
+      "packsFuel": "Akaryakıt istasyonları",
+      "packsFuelDesc": "3×8 vardiyalar, posta yoklaması, fazla mesai bordroya",
+      "packsEdu": "Okullar & eğitim",
+      "packsEduDesc": "Personel yoklaması, yerine geçme, okul bordrosu",
+      "packsTravel": "Seyahat acenteleri",
+      "packsTravelDesc": "Müşteri dosyaları, biletleme, komisyonlar, bordro",
+      "comparer": "Karşılaştır"
     }
   },
   "brandingPage": {
@@ -8710,5 +8759,207 @@
     "error_rate_limited": "Kısa sürede çok fazla istek. Yeniden denemeden önce birkaç dakika bekleyin.",
     "error_generic": "Bir hata oluştu. Biraz sonra tekrar deneyin.",
     "open_assistant": "Asistanı aç"
+  },
+  "cagnottesModule": {
+    "title": "Dayanışma kampanyaları",
+    "subtitle": "Herkese açık bağlantıyla toplayın — banka kartı ve mobil para — sonra hak sahibine aktarın.",
+    "tabs": {
+      "cagnottes": "Kampanyalar",
+      "settings": "Ayarlar"
+    },
+    "errorGeneric": "Bir hata oluştu.",
+    "created": "Kampanya taslak olarak oluşturuldu. Bağış bağlantısını almak için yayınlayın.",
+    "payoutRequested": "Ödeme talep edildi. Ödemeler listesinden takip edin.",
+    "settingsSaved": "Ayarlar kaydedildi — herkese açık sayfaya anında uygulandı.",
+    "inactive": {
+      "title": "Dikey çözüm etkin değil",
+      "body": "Dayanışma kampanyaları bu alanda etkin değil. Kurulum görüşmesinde \"Dernek / STK\" yanıtını verin veya desteğe başvurun."
+    },
+    "newCagnotte": "Yeni kampanya",
+    "empty": "Henüz kampanya yok — ilkini oluşturun ve bağlantısını paylaşın.",
+    "for": "Yararına",
+    "contributions": "katkı",
+    "available": "kullanılabilir",
+    "copied": "Bağlantı kopyalandı!",
+    "copyLink": "Bağış bağlantısını kopyala",
+    "viewPublic": "Herkese açık sayfayı gör",
+    "cancel": "İptal",
+    "showPayouts": "Ödemeler",
+    "hidePayouts": "Ödemeleri gizle",
+    "create": {
+      "title": "Kampanya oluştur",
+      "titleLabel": "Başlık",
+      "titlePlaceholder": "Örn. Fatou'nun tıbbi masrafları için yardım",
+      "beneficiary": "Hak sahibi",
+      "beneficiaryPlaceholder": "Kişi veya amacın adı",
+      "contact": "Hak sahibi iletişimi",
+      "contactPlaceholder": "Telefon veya e-posta (dahili)",
+      "category": "Kategori",
+      "goal": "Hedef",
+      "currency": "Para birimi",
+      "endsAt": "Bağış bitişi",
+      "suggested": "Önerilen tutarlar (virgülle ayrılmış)",
+      "min": "Min tutar",
+      "max": "Maks tutar",
+      "description": "Açıklama",
+      "descriptionPlaceholder": "Bu kampanyanın hikâyesini anlatın — katkıda bulunanlar bunu görecek.",
+      "submit": "Taslak oluştur"
+    },
+    "categories": {
+      "medical": "Tıbbi",
+      "education": "Eğitim",
+      "emergency": "Acil",
+      "community": "Topluluk",
+      "project": "Proje",
+      "other": "Diğer"
+    },
+    "actions": {
+      "publish": "Yayınla",
+      "pause": "Duraklat",
+      "resume": "Sürdür",
+      "close": "Kapat",
+      "payout": "Parayı aktar"
+    },
+    "payout": {
+      "title": "Ödeme talebi",
+      "amount": "Tutar",
+      "method": "Ödeme yöntemi",
+      "recipient": "Alıcı adı",
+      "account": "Hesap / numara",
+      "submit": "Talebi gönder",
+      "empty": "Bu kampanya için ödeme yok.",
+      "markPaid": "Ödendi işaretle",
+      "accountPlaceholder": "+221… / IBAN"
+    },
+    "payoutMethods": {
+      "mobile_money": "Mobil para",
+      "bank_transfer": "Banka havalesi"
+    },
+    "settings": {
+      "title": "Modül ayarları",
+      "hint": "Tüm kampanyalarınıza ve herkese açık bağış sayfasına anında uygulanır.",
+      "methods": "Sunulan ödeme yöntemleri",
+      "minDefault": "Varsayılan min tutar",
+      "maxDefault": "Varsayılan maks tutar",
+      "suggestedDefault": "Varsayılan önerilen tutarlar",
+      "allowAnonymous": "Anonim katkılara izin ver",
+      "allowMessages": "Katkı mesajlarına izin ver",
+      "showSupporters": "Destekçi duvarı herkese açık",
+      "save": "Ayarları kaydet"
+    },
+    "methods": {
+      "card": "Banka kartı",
+      "mobile_money": "Mobil para",
+      "bank_transfer": "Havale",
+      "cash": "Nakit"
+    }
+  },
+  "cagnotte": {
+    "loading": "Yükleniyor…",
+    "notFound": {
+      "title": "Bağış kampanyası bulunamadı",
+      "body": "Bu bağlantı aktif bir kampanya ile eşleşmiyor. Paylaşılan bağlantıyı kontrol edin."
+    },
+    "for": "Yararına",
+    "contributors": "katkıda bulunan",
+    "share": {
+      "copy": "Bağlantıyı kopyala",
+      "copied": "Bağlantı kopyalandı!",
+      "qr": "QR kodu",
+      "qrAlt": "Kampanya bağlantısının QR kodu",
+      "hint": "Bu bağlantıyı paylaşın"
+    },
+    "success": {
+      "title": "Bağışınız için teşekkürler!",
+      "body": "Katkınız başarıyla kaydedildi."
+    },
+    "reference": "Referans",
+    "failed": {
+      "title": "Ödeme başarısız",
+      "body": "Herhangi bir tutar tahsil edilmedi. Tekrar deneyebilirsiniz.",
+      "retry": "Tekrar dene"
+    },
+    "pending": {
+      "title": "Ödeme bekleniyor",
+      "hint": "Ödeme onaylandığında bu sayfa otomatik olarak güncellenecektir."
+    },
+    "form": {
+      "title": "Katkıda bulun",
+      "amount": "Tutar",
+      "customAmount": "Diğer tutar",
+      "min": "Min",
+      "max": "Maks",
+      "method": "Ödeme yöntemi",
+      "name": "Adınız (isteğe bağlı)",
+      "email": "E-postanız (isteğe bağlı)",
+      "phone": "Mobil para numarası (gerekli)",
+      "anonymous": "Destekçi duvarında anonim kal",
+      "message": "Destek mesajı (isteğe bağlı)",
+      "submit": "Bağış yap"
+    },
+    "methods": {
+      "card": "Banka kartı",
+      "mobile_money": "Mobil para",
+      "bank_transfer": "Havale",
+      "cash": "Nakit"
+    },
+    "errors": {
+      "generic": "Bir hata oluştu. Tekrar deneyin."
+    },
+    "ended": "Bu kampanya şu anda katkı kabul etmiyor.",
+    "supporters": {
+      "title": "Destekçiler"
+    },
+    "poweredBy": "Leopardo tarafından — Dayanışma kampanyaları",
+    "meta": {
+      "genericTitle": "Dayanışma kampanyası — Leopardo",
+      "genericDescription": "Bir amacı saniyeler içinde destekleyin: banka kartı veya mobil para ile bağış yapın.",
+      "titleSuffix": "Dayanışma kampanyası"
+    }
+  },
+  "vtc": {
+    "title": "VTC & taksi",
+    "subtitle": "Yolculuk ataması ve gerçek zamanlı sürücü takibi",
+    "rides": "Yolculuklar",
+    "drivers": "Sürücüler",
+    "openDrivers": "Sürücüleri gör",
+    "openRides": "Yolculukları gör",
+    "rideCount": "aktif yolculuk",
+    "driverCount": "sürücü",
+    "loading": "Yükleniyor…",
+    "retry": "Yenile",
+    "autoRefresh": "15 sn’de bir otomatik yenileme",
+    "loadError": "VTC atama panosu yüklenemedi",
+    "moduleDisabled": "VTC modülü bu şirket için etkin değil.",
+    "emptyRides": "Aktif yolculuk yok",
+    "emptyRidesHint": "Yolcu API’sinden istenen yolculuklar burada gerçek zamanlı görünecek.",
+    "emptyDrivers": "Kayıtlı sürücü yok",
+    "emptyDriversHint": "Sürücü kayıtları yönetici API’sinden oluşturulur (POST /vtc/drivers).",
+    "reference": "Referans",
+    "pickup": "Alış noktası",
+    "dropoff": "Varış noktası",
+    "driver": "Sürücü",
+    "pendingOffer": "Bekleyen teklif",
+    "unassigned": "Atanmadı",
+    "estimatedPrice": "Tahmini ücret",
+    "requestedAt": "İsteme zamanı",
+    "lastPosition": "Son konum",
+    "positionUnavailable": "Konum bildirilmedi",
+    "updatedAt": "Son güncelleme",
+    "vehicle": "Araç",
+    "phone": "Telefon",
+    "statusRequested": "İstendi",
+    "statusDispatching": "Atanıyor",
+    "statusAccepted": "Kabul edildi",
+    "statusArrived": "Sürücü geldi",
+    "statusInProgress": "Devam ediyor",
+    "statusCompleted": "Tamamlandı",
+    "statusExpired": "Süresi doldu",
+    "statusCancelled": "İptal edildi",
+    "statusUnknown": "Bilinmeyen durum",
+    "driverOffline": "Çevrimdışı",
+    "driverAvailable": "Müsait",
+    "driverBusy": "Yolculukta",
+    "driverSuspended": "Askıya alındı"
   }
 }

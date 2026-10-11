@@ -26,6 +26,8 @@ const PROTECTED_PREFIXES = [
   '/social-marketing',
   '/restaurant',
   '/showcase',
+  // FUND-090 — gestion des cagnottes, espace tenant (zone dashboard).
+  '/fundraising',
   // BC-19 (#7425) — mur de caméras et détail caméra (zone dashboard).
   '/cameras',
   // #7400 — flotte & véhicules de service (zone dashboard).
@@ -50,6 +52,8 @@ const PROTECTED_PREFIXES = [
   '/modules',
   // BOS-035 (#8224) — panneau Assistant Leo IA (zone dashboard).
   '/assistant',
+  // BC-35 VTC (#8349, VTC-07/#8363) — console dispatch (zone dashboard).
+  '/vtc',
 ];
 
 function isProtectedPath(url) {

@@ -1055,7 +1055,8 @@
       "restaurant": "Restauration",
       "travelagency": "Agence de voyage",
       "accounting": "Comptabilité",
-      "company_showcase": "Site vitrine"
+      "company_showcase": "Site vitrine",
+      "fundraising": "Cagnottes solidaires"
     },
     "tabOverview": "Vue d'ensemble",
     "tabModules": "Modules & verticales",
@@ -2329,7 +2330,7 @@
       "toggleAria": "Changer la période de facturation",
       "fullComparison": "Voir la comparaison complete",
       "reassurance": "Sans carte bancaire · Annulable à tout moment",
-      "selfHostNote": "Ou auto-hébergez Leopardo gratuitement — 100 % open source"
+      "selfHostNote": "Ou auto-hébergez Leopardo gratuitement — vos données, chez vous"
     },
     "card": {
       "periodDefault": "/mois",
@@ -2979,7 +2980,7 @@
     }
   },
   "settingsBiometricNotesTitle": "Note biométrique",
-  "_updated_at": "2026-09-28T09:00:00Z",
+  "_updated_at": "2026-10-11T00:00:00Z",
   "settingsLastNameLabel": "Nom",
   "dashboardActiveLabel": "Entreprises actives",
   "attendanceRetry": "Réessayer",
@@ -5566,6 +5567,7 @@
     "accountingSettings": "Comptabilité — Paramétrage",
     "fuelStation": "Stations-service",
     "travelAgency": "Agence de voyage",
+    "fundraising": "Cagnottes solidaires",
     "surveyStats": "Surveys de solutions",
     "solutionSurveys": "Surveys de solutions",
     "travel": "Agence de voyage",
@@ -5679,6 +5681,40 @@
   "attendanceDailyEstimate": "Gain estimé du jour",
   "back": "Retour",
   "settingsRecoveryEmailLabel": "Email de recuperation",
+  "fundraising": {
+    "settings": {
+      "title": "Cagnottes solidaires — Paramétrage",
+      "subtitle": "Moyens de paiement offerts, garde-fous et options de la surface publique de vos cagnottes.",
+      "disabled_title": "Verticale Cagnottes solidaires non activée",
+      "disabled_body": "Le flag fundraising n’est pas activé pour ce tenant. Contactez un administrateur plateforme pour l’activer.",
+      "payments_title": "Moyens de paiement offerts",
+      "payments_subtitle": "Les contributeurs ne verront que les moyens cochés sur la page publique de la cagnotte.",
+      "method_card": "Carte bancaire (Stripe)",
+      "method_mobile_money": "Mobile money (Orange, MTN, Wave, Moov)",
+      "method_bank_transfer": "Virement bancaire (confirmation manuelle)",
+      "method_cash": "Espèces (confirmation manuelle)",
+      "methods_required": "Sélectionnez au moins un moyen de paiement.",
+      "limits_title": "Garde-fous montants",
+      "limits_subtitle": "Bornes par défaut appliquées quand une cagnotte ne définit pas ses propres limites.",
+      "default_min_amount": "Montant minimum par défaut",
+      "default_max_amount": "Montant maximum par défaut",
+      "suggested_title": "Montants suggérés par défaut",
+      "suggested_subtitle": "Pré-remplis à la création d’une cagnotte (modifiables par cagnotte).",
+      "suggested_hint": "Montants séparés par des virgules, dans la devise de la cagnotte.",
+      "public_title": "Surface publique",
+      "public_subtitle": "Ce que les contributeurs peuvent faire et voir sur le lien public.",
+      "allow_anonymous": "Contributions anonymes",
+      "allow_anonymous_hint": "Le nom du contributeur n’apparaît pas sur le mur des soutiens.",
+      "allow_messages": "Messages des contributeurs",
+      "allow_messages_hint": "Un message de soutien peut accompagner chaque contribution.",
+      "show_supporters": "Mur des soutiens public",
+      "show_supporters_hint": "La liste des contributions confirmées est visible sur le lien public.",
+      "save": "Enregistrer le paramétrage",
+      "saved": "Paramétrage enregistré.",
+      "load_error": "Impossible de charger le paramétrage.",
+      "save_error": "Impossible d’enregistrer le paramétrage."
+    }
+  },
   "travel": {
     "common": {
       "retry": "Réessayer",
@@ -7484,7 +7520,8 @@
           "commerce": "Commerce",
           "services": "Services",
           "travel": "Agence de voyage",
-          "other": "Mon secteur n'est pas listé"
+          "other": "Mon secteur n'est pas listé",
+          "association": "Association / ONG"
         }
       },
       "premises": {
@@ -7646,7 +7683,19 @@
       "faq": "FAQ",
       "faqDesc": "Questions fréquentes",
       "support": "Support",
-      "supportDesc": "Contactez notre équipe"
+      "supportDesc": "Contactez notre équipe",
+      "packs": "Packs offerts",
+      "packsHub": "Tous les packs",
+      "packsHubDesc": "Un pack offert par métier — découvrez l'offre",
+      "packsRestaurant": "Restaurants",
+      "packsRestaurantDesc": "Caisse, cuisine, réservations — pack composé en 3 questions",
+      "packsFuel": "Stations-service",
+      "packsFuelDesc": "Rotations 3×8, pointage par poste, majorations vers la paie",
+      "packsEdu": "Écoles & formation",
+      "packsEduDesc": "Présence du personnel, remplacements, paie scolaire",
+      "packsTravel": "Agences de voyage",
+      "packsTravelDesc": "Dossiers clients, billetterie, commissions, paie",
+      "comparer": "Comparer"
     }
   },
   "brandingPage": {
@@ -8577,5 +8626,207 @@
     "error_rate_limited": "Trop de requêtes en peu de temps. Patientez quelques instants avant de réessayer.",
     "error_generic": "Une erreur est survenue. Réessayez dans un instant.",
     "open_assistant": "Ouvrir l’assistant"
+  },
+  "cagnottesModule": {
+    "title": "Cagnottes solidaires",
+    "subtitle": "Collectez par lien public — carte bancaire et mobile money — puis reversez au bénéficiaire.",
+    "tabs": {
+      "cagnottes": "Cagnottes",
+      "settings": "Paramétrage"
+    },
+    "errorGeneric": "Une erreur est survenue.",
+    "created": "Cagnotte créée en brouillon. Publiez-la pour obtenir son lien de collecte.",
+    "payoutRequested": "Reversement demandé. Suivez son traitement dans la liste des reversements.",
+    "settingsSaved": "Paramétrage enregistré — appliqué immédiatement à la page publique.",
+    "inactive": {
+      "title": "Verticale non activée",
+      "body": "Les Cagnottes solidaires ne sont pas activées sur cet espace. Répondez « Association / ONG » à l'entretien de préparation ou contactez le support."
+    },
+    "newCagnotte": "Nouvelle cagnotte",
+    "empty": "Aucune cagnotte pour l'instant — créez la première et partagez son lien.",
+    "for": "Pour",
+    "contributions": "contributions",
+    "available": "disponible",
+    "copied": "Lien copié !",
+    "copyLink": "Copier le lien de collecte",
+    "viewPublic": "Voir la page publique",
+    "cancel": "Annuler",
+    "showPayouts": "Reversements",
+    "hidePayouts": "Masquer les reversements",
+    "create": {
+      "title": "Créer une cagnotte",
+      "titleLabel": "Titre",
+      "titlePlaceholder": "Ex. Aide pour les frais médicaux de Fatou",
+      "beneficiary": "Bénéficiaire",
+      "beneficiaryPlaceholder": "Nom de la personne ou de la cause",
+      "contact": "Contact du bénéficiaire",
+      "contactPlaceholder": "Téléphone ou email (interne)",
+      "category": "Catégorie",
+      "goal": "Objectif",
+      "currency": "Devise",
+      "endsAt": "Fin de collecte",
+      "suggested": "Montants suggérés (séparés par des virgules)",
+      "min": "Montant min",
+      "max": "Montant max",
+      "description": "Description",
+      "descriptionPlaceholder": "Racontez l'histoire de cette cagnotte — c'est ce que verront les contributeurs.",
+      "submit": "Créer le brouillon"
+    },
+    "categories": {
+      "medical": "Médical",
+      "education": "Éducation",
+      "emergency": "Urgence",
+      "community": "Communauté",
+      "project": "Projet",
+      "other": "Autre"
+    },
+    "actions": {
+      "publish": "Publier",
+      "pause": "Mettre en pause",
+      "resume": "Reprendre",
+      "close": "Clôturer",
+      "payout": "Reverser les fonds"
+    },
+    "payout": {
+      "title": "Demande de reversement",
+      "amount": "Montant",
+      "method": "Moyen de reversement",
+      "recipient": "Nom du bénéficiaire",
+      "account": "Compte / numéro",
+      "submit": "Envoyer la demande",
+      "empty": "Aucun reversement pour cette cagnotte.",
+      "markPaid": "Marquer versé",
+      "accountPlaceholder": "+221… / IBAN"
+    },
+    "payoutMethods": {
+      "mobile_money": "Mobile money",
+      "bank_transfer": "Virement bancaire"
+    },
+    "settings": {
+      "title": "Paramétrage du module",
+      "hint": "Appliqué immédiatement à toutes vos cagnottes et à la page publique de don.",
+      "methods": "Moyens de paiement offerts",
+      "minDefault": "Montant min par défaut",
+      "maxDefault": "Montant max par défaut",
+      "suggestedDefault": "Montants suggérés par défaut",
+      "allowAnonymous": "Contributions anonymes autorisées",
+      "allowMessages": "Messages des contributeurs autorisés",
+      "showSupporters": "Mur des soutiens visible publiquement",
+      "save": "Enregistrer le paramétrage"
+    },
+    "methods": {
+      "card": "Carte bancaire",
+      "mobile_money": "Mobile money",
+      "bank_transfer": "Virement",
+      "cash": "Espèces"
+    }
+  },
+  "cagnotte": {
+    "loading": "Chargement…",
+    "notFound": {
+      "title": "Cagnotte introuvable",
+      "body": "Ce lien ne correspond à aucune cagnotte active. Vérifiez le lien partagé."
+    },
+    "for": "Pour",
+    "contributors": "contributeurs",
+    "share": {
+      "copy": "Copier le lien",
+      "copied": "Lien copié !",
+      "qr": "QR code",
+      "qrAlt": "QR code du lien de la cagnotte",
+      "hint": "Partagez ce lien"
+    },
+    "success": {
+      "title": "Merci pour votre don !",
+      "body": "Votre contribution a bien été enregistrée."
+    },
+    "reference": "Référence",
+    "failed": {
+      "title": "Le paiement a échoué",
+      "body": "Aucun montant débité. Vous pouvez réessayer.",
+      "retry": "Réessayer"
+    },
+    "pending": {
+      "title": "Paiement en attente",
+      "hint": "Cette page se mettra à jour automatiquement dès confirmation du paiement."
+    },
+    "form": {
+      "title": "Je contribue",
+      "amount": "Montant",
+      "customAmount": "Autre montant",
+      "min": "Min",
+      "max": "Max",
+      "method": "Moyen de paiement",
+      "name": "Votre nom (facultatif)",
+      "email": "Votre email (facultatif)",
+      "phone": "Numéro mobile money (requis)",
+      "anonymous": "Rester anonyme sur le mur des soutiens",
+      "message": "Un message de soutien (facultatif)",
+      "submit": "Donner"
+    },
+    "methods": {
+      "card": "Carte bancaire",
+      "mobile_money": "Mobile money",
+      "bank_transfer": "Virement",
+      "cash": "Espèces"
+    },
+    "errors": {
+      "generic": "Une erreur est survenue. Réessayez."
+    },
+    "ended": "Cette cagnotte n'accepte plus de contributions pour le moment.",
+    "supporters": {
+      "title": "Ils soutiennent"
+    },
+    "poweredBy": "Propulsé par Leopardo — Cagnottes solidaires",
+    "meta": {
+      "genericTitle": "Cagnotte solidaire — Leopardo",
+      "genericDescription": "Soutenez une cause en quelques secondes : don par carte bancaire ou mobile money.",
+      "titleSuffix": "Cagnotte solidaire"
+    }
+  },
+  "vtc": {
+    "title": "VTC & taxi",
+    "subtitle": "Dispatch des courses et suivi des chauffeurs en temps réel",
+    "rides": "Courses",
+    "drivers": "Chauffeurs",
+    "openDrivers": "Voir les chauffeurs",
+    "openRides": "Voir les courses",
+    "rideCount": "course(s) active(s)",
+    "driverCount": "chauffeur(s)",
+    "loading": "Chargement…",
+    "retry": "Actualiser",
+    "autoRefresh": "Actualisation automatique toutes les 15 s",
+    "loadError": "Impossible de charger le dispatch VTC",
+    "moduleDisabled": "Le module VTC n’est pas activé pour cette entreprise.",
+    "emptyRides": "Aucune course active",
+    "emptyRidesHint": "Les courses demandées via l’API passager apparaîtront ici en temps réel.",
+    "emptyDrivers": "Aucun chauffeur enregistré",
+    "emptyDriversHint": "Les fiches chauffeurs se créent depuis l’API admin (POST /vtc/drivers).",
+    "reference": "Référence",
+    "pickup": "Prise en charge",
+    "dropoff": "Destination",
+    "driver": "Chauffeur",
+    "pendingOffer": "Offre en cours",
+    "unassigned": "Non assigné",
+    "estimatedPrice": "Prix estimé",
+    "requestedAt": "Demandée à",
+    "lastPosition": "Dernière position",
+    "positionUnavailable": "Aucune position relevée",
+    "updatedAt": "Dernier relevé",
+    "vehicle": "Véhicule",
+    "phone": "Téléphone",
+    "statusRequested": "Demandée",
+    "statusDispatching": "En dispatch",
+    "statusAccepted": "Acceptée",
+    "statusArrived": "Chauffeur arrivé",
+    "statusInProgress": "En cours",
+    "statusCompleted": "Terminée",
+    "statusExpired": "Expirée",
+    "statusCancelled": "Annulée",
+    "statusUnknown": "Statut inconnu",
+    "driverOffline": "Hors ligne",
+    "driverAvailable": "Disponible",
+    "driverBusy": "En course",
+    "driverSuspended": "Suspendu"
   }
 }

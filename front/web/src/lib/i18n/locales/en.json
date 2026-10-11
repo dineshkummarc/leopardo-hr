@@ -1,6 +1,6 @@
 {
   "_version": "1.0.0",
-  "_updated_at": "2026-09-28T09:00:00Z",
+  "_updated_at": "2026-10-11T00:00:00Z",
   "_locale": "en",
   "app": {
     "title": "Leopardo — Business Suite"
@@ -1404,7 +1404,7 @@
       "toggleAria": "Toggle billing period",
       "fullComparison": "View full comparison",
       "reassurance": "No credit card · Cancel anytime",
-      "selfHostNote": "Or self-host Leopardo for free — 100% open source"
+      "selfHostNote": "Or self-host Leopardo for free — your data, your server"
     },
     "card": {
       "periodDefault": "/month",
@@ -6253,6 +6253,7 @@
           "commerce": "Retail",
           "services": "Services",
           "travel": "Travel agency",
+          "association": "Nonprofit / NGO",
           "other": "My sector is not listed"
         }
       },
@@ -6351,6 +6352,17 @@
     },
     "nav": {
       "pricing": "Pricing",
+      "packs": "Free packs",
+      "packsHub": "All packs",
+      "packsHubDesc": "A free pack per trade — discover the offer",
+      "packsRestaurant": "Restaurants",
+      "packsRestaurantDesc": "POS, kitchen, reservations — pack built in 3 questions",
+      "packsFuel": "Fuel stations",
+      "packsFuelDesc": "3×8 rotations, per-post clock-ins, overtime to payroll",
+      "packsEdu": "Schools & training",
+      "packsEduDesc": "Staff attendance, replacements, school payroll",
+      "packsTravel": "Travel agencies",
+      "packsTravelDesc": "Client files, ticketing, commissions, payroll",
       "resources": "Resources",
       "guides": "Guides",
       "guidesDesc": "HR best practices and tutorials",
@@ -6361,6 +6373,7 @@
       "changelog": "Changelog",
       "changelogDesc": "Latest product updates",
       "contact": "Contact",
+      "comparer": "Compare",
       "install": "Install Leopardo",
       "windowsDesc": "Desktop client for ZKTeco and sync",
       "macosDesc": "Desktop workspace for field teams",
@@ -7218,6 +7231,208 @@
         "cancelled": "Cancelled",
         "no_show": "No-show"
       }
+    }
+  },
+  "cagnotte": {
+    "loading": "Loading…",
+    "notFound": {
+      "title": "Fundraiser not found",
+      "body": "This link does not match any active fundraiser. Please check the shared link."
+    },
+    "for": "For",
+    "contributors": "contributors",
+    "share": {
+      "copy": "Copy link",
+      "copied": "Link copied!",
+      "qr": "QR code",
+      "qrAlt": "QR code of the fundraiser link",
+      "hint": "Share this link"
+    },
+    "success": {
+      "title": "Thank you for your donation!",
+      "body": "Your contribution has been recorded."
+    },
+    "reference": "Reference",
+    "failed": {
+      "title": "Payment failed",
+      "body": "No amount was charged. You can try again.",
+      "retry": "Try again"
+    },
+    "pending": {
+      "title": "Payment pending",
+      "hint": "This page will update automatically once the payment is confirmed."
+    },
+    "form": {
+      "title": "Contribute",
+      "amount": "Amount",
+      "customAmount": "Custom amount",
+      "min": "Min",
+      "max": "Max",
+      "method": "Payment method",
+      "name": "Your name (optional)",
+      "email": "Your email (optional)",
+      "phone": "Mobile money number (required)",
+      "anonymous": "Stay anonymous on the supporters wall",
+      "message": "A message of support (optional)",
+      "submit": "Donate"
+    },
+    "methods": {
+      "card": "Bank card",
+      "mobile_money": "Mobile money",
+      "bank_transfer": "Bank transfer",
+      "cash": "Cash"
+    },
+    "errors": {
+      "generic": "Something went wrong. Please try again."
+    },
+    "ended": "This fundraiser is not accepting contributions at the moment.",
+    "supporters": {
+      "title": "Supporters"
+    },
+    "poweredBy": "Powered by Leopardo — Solidarity fundraisers",
+    "meta": {
+      "genericTitle": "Solidarity fundraiser — Leopardo",
+      "genericDescription": "Support a cause in seconds: donate by bank card or mobile money.",
+      "titleSuffix": "Solidarity fundraiser"
+    }
+  },
+  "vtc": {
+    "title": "Ride-hailing & taxi",
+    "subtitle": "Ride dispatch and real-time driver tracking",
+    "rides": "Rides",
+    "drivers": "Drivers",
+    "openDrivers": "View drivers",
+    "openRides": "View rides",
+    "rideCount": "active ride(s)",
+    "driverCount": "driver(s)",
+    "loading": "Loading…",
+    "retry": "Refresh",
+    "autoRefresh": "Auto-refresh every 15 s",
+    "loadError": "Unable to load the ride-hailing dispatch",
+    "moduleDisabled": "The ride-hailing module is not enabled for this company.",
+    "emptyRides": "No active rides",
+    "emptyRidesHint": "Rides requested through the passenger API will appear here in real time.",
+    "emptyDrivers": "No registered drivers",
+    "emptyDriversHint": "Driver profiles are created from the admin API (POST /vtc/drivers).",
+    "reference": "Reference",
+    "pickup": "Pickup",
+    "dropoff": "Dropoff",
+    "driver": "Driver",
+    "pendingOffer": "Pending offer",
+    "unassigned": "Unassigned",
+    "estimatedPrice": "Estimated price",
+    "requestedAt": "Requested at",
+    "lastPosition": "Last position",
+    "positionUnavailable": "No position reported",
+    "updatedAt": "Last update",
+    "vehicle": "Vehicle",
+    "phone": "Phone",
+    "statusRequested": "Requested",
+    "statusDispatching": "Dispatching",
+    "statusAccepted": "Accepted",
+    "statusArrived": "Driver arrived",
+    "statusInProgress": "In progress",
+    "statusCompleted": "Completed",
+    "statusExpired": "Expired",
+    "statusCancelled": "Cancelled",
+    "statusUnknown": "Unknown status",
+    "driverOffline": "Offline",
+    "driverAvailable": "Available",
+    "driverBusy": "On a ride",
+    "driverSuspended": "Suspended"
+  },
+  "cagnottesModule": {
+    "title": "Solidarity fundraisers",
+    "subtitle": "Collect via a public link — bank card and mobile money — then pay out to the beneficiary.",
+    "tabs": {
+      "cagnottes": "Fundraisers",
+      "settings": "Settings"
+    },
+    "errorGeneric": "Something went wrong.",
+    "created": "Fundraiser created as draft. Publish it to get its collection link.",
+    "payoutRequested": "Payout requested. Track its processing in the payouts list.",
+    "settingsSaved": "Settings saved — applied immediately to the public page.",
+    "inactive": {
+      "title": "Vertical not activated",
+      "body": "Solidarity fundraisers are not activated on this workspace. Answer \"Nonprofit / NGO\" in the setup interview or contact support."
+    },
+    "newCagnotte": "New fundraiser",
+    "empty": "No fundraiser yet — create the first one and share its link.",
+    "for": "For",
+    "contributions": "contributions",
+    "available": "available",
+    "copied": "Link copied!",
+    "copyLink": "Copy collection link",
+    "viewPublic": "View public page",
+    "cancel": "Cancel",
+    "showPayouts": "Payouts",
+    "hidePayouts": "Hide payouts",
+    "create": {
+      "title": "Create a fundraiser",
+      "titleLabel": "Title",
+      "titlePlaceholder": "E.g. Help for Fatou's medical expenses",
+      "beneficiary": "Beneficiary",
+      "beneficiaryPlaceholder": "Name of the person or cause",
+      "contact": "Beneficiary contact",
+      "contactPlaceholder": "Phone or email (internal)",
+      "category": "Category",
+      "goal": "Goal",
+      "currency": "Currency",
+      "endsAt": "Collection end",
+      "suggested": "Suggested amounts (comma separated)",
+      "min": "Min amount",
+      "max": "Max amount",
+      "description": "Description",
+      "descriptionPlaceholder": "Tell the story of this fundraiser — this is what contributors will see.",
+      "submit": "Create draft"
+    },
+    "categories": {
+      "medical": "Medical",
+      "education": "Education",
+      "emergency": "Emergency",
+      "community": "Community",
+      "project": "Project",
+      "other": "Other"
+    },
+    "actions": {
+      "publish": "Publish",
+      "pause": "Pause",
+      "resume": "Resume",
+      "close": "Close",
+      "payout": "Pay out funds"
+    },
+    "payout": {
+      "title": "Payout request",
+      "amount": "Amount",
+      "method": "Payout method",
+      "recipient": "Recipient name",
+      "account": "Account / number",
+      "accountPlaceholder": "+221… / IBAN",
+      "submit": "Send request",
+      "empty": "No payout for this fundraiser.",
+      "markPaid": "Mark as paid"
+    },
+    "payoutMethods": {
+      "mobile_money": "Mobile money",
+      "bank_transfer": "Bank transfer"
+    },
+    "settings": {
+      "title": "Module settings",
+      "hint": "Applied immediately to all your fundraisers and the public donation page.",
+      "methods": "Payment methods offered",
+      "minDefault": "Default min amount",
+      "maxDefault": "Default max amount",
+      "suggestedDefault": "Default suggested amounts",
+      "allowAnonymous": "Anonymous contributions allowed",
+      "allowMessages": "Contributor messages allowed",
+      "showSupporters": "Supporters wall publicly visible",
+      "save": "Save settings"
+    },
+    "methods": {
+      "card": "Bank card",
+      "mobile_money": "Mobile money",
+      "bank_transfer": "Bank transfer",
+      "cash": "Cash"
     }
   }
 }

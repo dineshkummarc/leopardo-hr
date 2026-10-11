@@ -38,6 +38,8 @@ export const PROTECTED_PREFIXES = [
   // sections, thème, publication). Le site PUBLIC rendu vit sous
   // `/vitrine/{slug}` (hors de cette liste : il est public par nature).
   '/showcase',
+  // FUND-090 : gestion des cagnottes (espace tenant connecté).
+  '/fundraising',
   // BC-19 DEVICE (#7425) — mur de caméras (`/cameras`) et détail caméra
   // (`/cameras/{id}`) : données de vidéosurveillance, jamais servies sans
   // session. Le viewer tiers public vit hors de ce préfixe (`/view/cam`).
@@ -75,6 +77,10 @@ export const PROTECTED_PREFIXES = [
   // d'actions, historique) : conversations du tenant, jamais servies sans
   // session.
   '/assistant',
+  // BC-35 VTC (épic #8349, VTC-07/#8363) — console dispatch (courses,
+  // chauffeurs, positions) : données opérationnelles du tenant, jamais
+  // servies sans session.
+  '/vtc',
 ] as const;
 
 /**
