@@ -8760,6 +8760,69 @@
     "error_generic": "Bir hata oluştu. Biraz sonra tekrar deneyin.",
     "open_assistant": "Asistanı aç"
   },
+  "cagnotte": {
+    "loading": "Yükleniyor…",
+    "notFound": {
+      "title": "Bağış kampanyası bulunamadı",
+      "body": "Bu bağlantı aktif bir kampanya ile eşleşmiyor. Paylaşılan bağlantıyı kontrol edin."
+    },
+    "for": "Yararına",
+    "contributors": "katkıda bulunan",
+    "share": {
+      "copy": "Bağlantıyı kopyala",
+      "copied": "Bağlantı kopyalandı!",
+      "qr": "QR kodu",
+      "qrAlt": "Kampanya bağlantısının QR kodu",
+      "hint": "Bu bağlantıyı paylaşın"
+    },
+    "success": {
+      "title": "Bağışınız için teşekkürler!",
+      "body": "Katkınız başarıyla kaydedildi."
+    },
+    "reference": "Referans",
+    "failed": {
+      "title": "Ödeme başarısız",
+      "body": "Herhangi bir tutar tahsil edilmedi. Tekrar deneyebilirsiniz.",
+      "retry": "Tekrar dene"
+    },
+    "pending": {
+      "title": "Ödeme bekleniyor",
+      "hint": "Ödeme onaylandığında bu sayfa otomatik olarak güncellenecektir."
+    },
+    "form": {
+      "title": "Katkıda bulun",
+      "amount": "Tutar",
+      "customAmount": "Diğer tutar",
+      "min": "Min",
+      "max": "Maks",
+      "method": "Ödeme yöntemi",
+      "name": "Adınız (isteğe bağlı)",
+      "email": "E-postanız (isteğe bağlı)",
+      "phone": "Mobil para numarası (gerekli)",
+      "anonymous": "Destekçi duvarında anonim kal",
+      "message": "Destek mesajı (isteğe bağlı)",
+      "submit": "Bağış yap"
+    },
+    "methods": {
+      "card": "Banka kartı",
+      "mobile_money": "Mobil para",
+      "bank_transfer": "Havale",
+      "cash": "Nakit"
+    },
+    "errors": {
+      "generic": "Bir hata oluştu. Tekrar deneyin."
+    },
+    "ended": "Bu kampanya şu anda katkı kabul etmiyor.",
+    "supporters": {
+      "title": "Destekçiler"
+    },
+    "poweredBy": "Leopardo tarafından — Dayanışma kampanyaları",
+    "meta": {
+      "genericTitle": "Dayanışma kampanyası — Leopardo",
+      "genericDescription": "Bir amacı saniyeler içinde destekleyin: banka kartı veya mobil para ile bağış yapın.",
+      "titleSuffix": "Dayanışma kampanyası"
+    }
+  },
   "vtc": {
     "title": "VTC & taksi",
     "subtitle": "Yolculuk ataması ve gerçek zamanlı sürücü takibi",
