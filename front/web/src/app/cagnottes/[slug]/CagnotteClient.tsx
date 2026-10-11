@@ -276,7 +276,7 @@ export default function CagnotteClient({ slug }: { slug: string }) {
       startPolling(initiation, fundraiser);
     } catch (exception) {
       const apiMessage = (exception as { message?: string }).message;
-      setError(apiMessage && apiMessage !== '' ? apiMessage : t(locale, 'cagnotte.errors.generic', 'Une erreur est survenue. Réessayez.'));
+      setError(apiMessage && apiMessage !== '' ? apiMessage : t(locale, 'cagnotte.errors.generic'));
     } finally {
       setSubmitting(false);
     }
@@ -293,7 +293,7 @@ export default function CagnotteClient({ slug }: { slug: string }) {
   if (step.kind === 'loading') {
     return (
       <main dir={dir} className="flex min-h-screen items-center justify-center bg-slate-50">
-        <Loader2 className="h-8 w-8 animate-spin text-teal-600" aria-label={t(locale, 'cagnotte.loading', 'Chargement…')} />
+        <Loader2 className="h-8 w-8 animate-spin text-teal-600" aria-label={t(locale, 'cagnotte.loading')} />
       </main>
     );
   }
@@ -302,8 +302,8 @@ export default function CagnotteClient({ slug }: { slug: string }) {
     return (
       <main dir={dir} className="flex min-h-screen flex-col items-center justify-center gap-3 bg-slate-50 px-4 text-center">
         <Gift className="h-10 w-10 text-slate-300" />
-        <h1 className="text-xl font-black text-slate-950">{t(locale, 'cagnotte.notFound.title', 'Cagnotte introuvable')}</h1>
-        <p className="max-w-md text-sm text-slate-500">{t(locale, 'cagnotte.notFound.body', 'Ce lien ne correspond à aucune cagnotte active. Vérifiez le lien partagé.')}</p>
+        <h1 className="text-xl font-black text-slate-950">{t(locale, 'cagnotte.notFound.title')}</h1>
+        <p className="max-w-md text-sm text-slate-500">{t(locale, 'cagnotte.notFound.body')}</p>
       </main>
     );
   }
@@ -327,7 +327,7 @@ export default function CagnotteClient({ slug }: { slug: string }) {
             <h1 className="text-2xl font-black tracking-tight text-slate-950">{fundraiser.title}</h1>
             {fundraiser.beneficiary_name && (
               <p className="mt-1 text-sm text-slate-500">
-                {t(locale, 'cagnotte.for', 'Pour')} <span className="font-bold text-slate-700">{fundraiser.beneficiary_name}</span>
+                {t(locale, 'cagnotte.for')} <span className="font-bold text-slate-700">{fundraiser.beneficiary_name}</span>
               </p>
             )}
             {fundraiser.description && <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-slate-600">{fundraiser.description}</p>}
@@ -343,7 +343,7 @@ export default function CagnotteClient({ slug }: { slug: string }) {
                 </p>
                 <p className="flex items-center gap-1 text-xs font-bold text-slate-500">
                   <Users className="h-3.5 w-3.5" />
-                  {fundraiser.contributions_count} {t(locale, 'cagnotte.contributors', 'contributeurs')}
+                  {fundraiser.contributions_count} {t(locale, 'cagnotte.contributors')}
                 </p>
               </div>
               {fundraiser.progress_percent !== null && (
@@ -361,23 +361,23 @@ export default function CagnotteClient({ slug }: { slug: string }) {
                 className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 shadow-sm hover:border-teal-300"
               >
                 {copied ? <Check className="h-3.5 w-3.5 text-teal-600" /> : <Copy className="h-3.5 w-3.5" />}
-                {copied ? t(locale, 'cagnotte.share.copied', 'Lien copié !') : t(locale, 'cagnotte.share.copy', 'Copier le lien')}
+                {copied ? t(locale, 'cagnotte.share.copied') : t(locale, 'cagnotte.share.copy')}
               </button>
               {qrDataUrl && (
                 <details className="relative">
                   <summary className="inline-flex cursor-pointer list-none items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 shadow-sm hover:border-teal-300">
                     <QrCode className="h-3.5 w-3.5" />
-                    {t(locale, 'cagnotte.share.qr', 'QR code')}
+                    {t(locale, 'cagnotte.share.qr')}
                   </summary>
                   <div className="absolute z-10 mt-2 rounded-2xl border border-slate-200 bg-white p-3 shadow-lg">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={qrDataUrl} alt={t(locale, 'cagnotte.share.qrAlt', 'QR code du lien de la cagnotte')} className="h-40 w-40" />
+                    <img src={qrDataUrl} alt={t(locale, 'cagnotte.share.qrAlt')} className="h-40 w-40" />
                   </div>
                 </details>
               )}
               <span className="ms-auto inline-flex items-center gap-1 text-[11px] font-bold text-slate-400">
                 <Share2 className="h-3 w-3" />
-                {t(locale, 'cagnotte.share.hint', 'Partagez ce lien')}
+                {t(locale, 'cagnotte.share.hint')}
               </span>
             </div>
           </div>
@@ -387,22 +387,22 @@ export default function CagnotteClient({ slug }: { slug: string }) {
         {step.kind === 'success' && (
           <div className="mt-6 rounded-3xl border border-teal-200 bg-teal-50 p-6 text-center">
             <CheckCircle2 className="mx-auto h-10 w-10 text-teal-600" />
-            <h2 className="mt-3 text-lg font-black text-slate-950">{t(locale, 'cagnotte.success.title', 'Merci pour votre don !')}</h2>
-            <p className="mt-1 text-sm text-slate-600">{t(locale, 'cagnotte.success.body', 'Votre contribution a bien été enregistrée.')}</p>
-            <p className="mt-2 text-xs font-bold text-slate-400">{t(locale, 'cagnotte.reference', 'Référence')} : {step.reference}</p>
+            <h2 className="mt-3 text-lg font-black text-slate-950">{t(locale, 'cagnotte.success.title')}</h2>
+            <p className="mt-1 text-sm text-slate-600">{t(locale, 'cagnotte.success.body')}</p>
+            <p className="mt-2 text-xs font-bold text-slate-400">{t(locale, 'cagnotte.reference')} : {step.reference}</p>
           </div>
         )}
 
         {step.kind === 'failed' && (
           <div className="mt-6 rounded-3xl border border-red-200 bg-red-50 p-6 text-center">
-            <h2 className="text-lg font-black text-slate-950">{t(locale, 'cagnotte.failed.title', 'Le paiement a échoué')}</h2>
-            <p className="mt-1 text-sm text-slate-600">{t(locale, 'cagnotte.failed.body', 'Aucun montant débité. Vous pouvez réessayer.')}</p>
+            <h2 className="text-lg font-black text-slate-950">{t(locale, 'cagnotte.failed.title')}</h2>
+            <p className="mt-1 text-sm text-slate-600">{t(locale, 'cagnotte.failed.body')}</p>
             <button
               type="button"
               onClick={() => setStep({ kind: 'ready', fundraiser })}
               className="mt-4 rounded-xl bg-slate-950 px-4 py-2 text-sm font-bold text-white"
             >
-              {t(locale, 'cagnotte.failed.retry', 'Réessayer')}
+              {t(locale, 'cagnotte.failed.retry')}
             </button>
           </div>
         )}
@@ -411,7 +411,7 @@ export default function CagnotteClient({ slug }: { slug: string }) {
           <div className="mt-6 rounded-3xl border border-amber-200 bg-amber-50 p-6">
             <div className="flex items-center gap-2">
               <Loader2 className="h-5 w-5 animate-spin text-amber-600" />
-              <h2 className="text-lg font-black text-slate-950">{t(locale, 'cagnotte.pending.title', 'Paiement en attente')}</h2>
+              <h2 className="text-lg font-black text-slate-950">{t(locale, 'cagnotte.pending.title')}</h2>
             </div>
             {step.initiation.payment.ussd_code && (
               <p className="mt-3 rounded-2xl bg-white px-4 py-3 text-center text-xl font-black tracking-widest text-slate-950">
@@ -421,17 +421,17 @@ export default function CagnotteClient({ slug }: { slug: string }) {
             {step.initiation.payment.instructions && (
               <p className="mt-3 text-sm leading-relaxed text-slate-700">{step.initiation.payment.instructions}</p>
             )}
-            <p className="mt-3 text-xs text-slate-500">{t(locale, 'cagnotte.pending.hint', 'Cette page se mettra à jour automatiquement dès confirmation du paiement.')}</p>
+            <p className="mt-3 text-xs text-slate-500">{t(locale, 'cagnotte.pending.hint')}</p>
           </div>
         )}
 
         {step.kind === 'ready' && fundraiser.accepts_contributions && (
           <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-black text-slate-950">{t(locale, 'cagnotte.form.title', 'Je contribue')}</h2>
+            <h2 className="text-lg font-black text-slate-950">{t(locale, 'cagnotte.form.title')}</h2>
 
             {/* Montants */}
             <div className="mt-4">
-              <label className="text-xs font-bold uppercase tracking-wide text-slate-500">{t(locale, 'cagnotte.form.amount', 'Montant')}</label>
+              <label className="text-xs font-bold uppercase tracking-wide text-slate-500">{t(locale, 'cagnotte.form.amount')}</label>
               {(fundraiser.suggested_amounts ?? []).length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-2">
                   {(fundraiser.suggested_amounts ?? []).map((value) => (
@@ -451,21 +451,21 @@ export default function CagnotteClient({ slug }: { slug: string }) {
                 inputMode="decimal"
                 value={customAmount}
                 onChange={(event) => setCustomAmount(event.target.value)}
-                placeholder={t(locale, 'cagnotte.form.customAmount', 'Autre montant')}
+                placeholder={t(locale, 'cagnotte.form.customAmount')}
                 className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-bold text-slate-950 outline-none focus:border-teal-400"
               />
               {(fundraiser.min_amount !== null || fundraiser.max_amount !== null) && (
                 <p className="mt-1 text-[11px] text-slate-400">
-                  {fundraiser.min_amount !== null && `${t(locale, 'cagnotte.form.min', 'Min')} ${money(fundraiser.min_amount, fundraiser.currency, locale)}`}
+                  {fundraiser.min_amount !== null && `${t(locale, 'cagnotte.form.min')} ${money(fundraiser.min_amount, fundraiser.currency, locale)}`}
                   {fundraiser.min_amount !== null && fundraiser.max_amount !== null && ' · '}
-                  {fundraiser.max_amount !== null && `${t(locale, 'cagnotte.form.max', 'Max')} ${money(fundraiser.max_amount, fundraiser.currency, locale)}`}
+                  {fundraiser.max_amount !== null && `${t(locale, 'cagnotte.form.max')} ${money(fundraiser.max_amount, fundraiser.currency, locale)}`}
                 </p>
               )}
             </div>
 
             {/* Méthodes */}
             <div className="mt-5">
-              <label className="text-xs font-bold uppercase tracking-wide text-slate-500">{t(locale, 'cagnotte.form.method', 'Moyen de paiement')}</label>
+              <label className="text-xs font-bold uppercase tracking-wide text-slate-500">{t(locale, 'cagnotte.form.method')}</label>
               <div className="mt-2 grid grid-cols-2 gap-2">
                 {(fundraiser.enabled_methods as PaymentMethod[]).filter((m) => ['card', 'mobile_money', 'bank_transfer', 'cash'].includes(m)).map((m) => {
                   const Icon = METHOD_ICONS[m];
@@ -490,14 +490,14 @@ export default function CagnotteClient({ slug }: { slug: string }) {
                 type="text"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                placeholder={t(locale, 'cagnotte.form.name', 'Votre nom (facultatif)')}
+                placeholder={t(locale, 'cagnotte.form.name')}
                 className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-950 outline-none focus:border-teal-400"
               />
               <input
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                placeholder={t(locale, 'cagnotte.form.email', 'Votre email (facultatif)')}
+                placeholder={t(locale, 'cagnotte.form.email')}
                 className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-950 outline-none focus:border-teal-400"
               />
               {method === 'mobile_money' && (
@@ -505,14 +505,14 @@ export default function CagnotteClient({ slug }: { slug: string }) {
                   type="tel"
                   value={phone}
                   onChange={(event) => setPhone(event.target.value)}
-                  placeholder={t(locale, 'cagnotte.form.phone', 'Numéro mobile money (requis)')}
+                  placeholder={t(locale, 'cagnotte.form.phone')}
                   className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-950 outline-none focus:border-teal-400"
                 />
               )}
               {fundraiser.allow_anonymous && (
                 <label className="flex items-center gap-2 text-sm text-slate-600">
                   <input type="checkbox" checked={anonymous} onChange={(event) => setAnonymous(event.target.checked)} className="h-4 w-4 rounded border-slate-300" />
-                  {t(locale, 'cagnotte.form.anonymous', 'Rester anonyme sur le mur des soutiens')}
+                  {t(locale, 'cagnotte.form.anonymous')}
                 </label>
               )}
               {fundraiser.allow_messages && (
@@ -521,7 +521,7 @@ export default function CagnotteClient({ slug }: { slug: string }) {
                   <textarea
                     value={message}
                     onChange={(event) => setMessage(event.target.value)}
-                    placeholder={t(locale, 'cagnotte.form.message', 'Un message de soutien (facultatif)')}
+                    placeholder={t(locale, 'cagnotte.form.message')}
                     rows={2}
                     maxLength={500}
                     className="w-full rounded-xl border border-slate-200 py-2.5 pe-4 ps-10 text-sm text-slate-950 outline-none focus:border-teal-400"
@@ -551,8 +551,8 @@ export default function CagnotteClient({ slug }: { slug: string }) {
             >
               {submitting && <Loader2 className="h-5 w-5 animate-spin" />}
               {effectiveAmount !== null && effectiveAmount > 0
-                ? `${t(locale, 'cagnotte.form.submit', 'Donner')} ${money(effectiveAmount, fundraiser.currency, locale)}`
-                : t(locale, 'cagnotte.form.submit', 'Donner')}
+                ? `${t(locale, 'cagnotte.form.submit')} ${money(effectiveAmount, fundraiser.currency, locale)}`
+                : t(locale, 'cagnotte.form.submit')}
             </button>
           </div>
         )}
@@ -566,7 +566,7 @@ export default function CagnotteClient({ slug }: { slug: string }) {
         {/* Mur des soutiens */}
         {fundraiser.show_supporters && supporters !== null && supporters.length > 0 && (
           <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-black text-slate-950">{t(locale, 'cagnotte.supporters.title', 'Ils soutiennent')}</h2>
+            <h2 className="text-lg font-black text-slate-950">{t(locale, 'cagnotte.supporters.title')}</h2>
             <ul className="mt-4 space-y-3">
               {supporters.map((supporter, index) => (
                 <li key={index} className="rounded-2xl bg-slate-50 px-4 py-3">
@@ -583,7 +583,7 @@ export default function CagnotteClient({ slug }: { slug: string }) {
           </div>
         )}
 
-        <p className="mt-8 text-center text-[11px] font-bold text-slate-300">{t(locale, 'cagnotte.poweredBy', 'Propulsé par Leopardo — Cagnottes solidaires')}</p>
+        <p className="mt-8 text-center text-[11px] font-bold text-slate-300">{t(locale, 'cagnotte.poweredBy')}</p>
       </div>
     </main>
   );
