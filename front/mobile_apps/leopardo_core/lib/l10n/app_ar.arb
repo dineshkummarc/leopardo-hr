@@ -5744,5 +5744,8 @@
   "cagnotteErrorsGeneric": "حدث خطأ. حاول مرة أخرى.",
   "cagnotteEnded": "هذه الحملة لا تقبل المساهمات حالياً.",
   "cagnotteSupportersTitle": "الداعمون",
-  "cagnottePoweredby": "مدعوم من Leopardo — حملات تضامن"
+  "cagnottePoweredby": "مدعوم من Leopardo — حملات تضامن",
+  "cagnotteMetaGenerictitle": "حملة تضامن — Leopardo",
+  "cagnotteMetaGenericdescription": "ادعم قضية في ثوانٍ: تبرع بالبطاقة البنكية أو الموبايل موني.",
+  "cagnotteMetaTitlesuffix": "حملة تضامن"
 }

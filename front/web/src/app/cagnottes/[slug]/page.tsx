@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import CagnotteClient from './CagnotteClient';
 import { resolveApiBaseUrl } from '@/lib/api-client';
+import { t as catalogT } from '@/lib/i18n/locale-catalog';
 
 /**
  * FUND-100 (#8402) — Page publique d'une cagnotte solidaire (`/cagnottes/{slug}`).
@@ -43,16 +44,15 @@ export async function generateMetadata({
 
   if (!fundraiser) {
     return {
-      title: 'Cagnotte solidaire — Leopardo',
-      description: 'Soutenez une cause en quelques secondes : don par carte bancaire ou mobile money.',
+      title: catalogT('fr', 'cagnotte.meta.genericTitle'),
+      description: catalogT('fr', 'cagnotte.meta.genericDescription'),
     };
   }
 
-  const description = fundraiser.description
-    ?? `Soutenez ${fundraiser.beneficiary_name ?? 'cette cause'} en quelques secondes : don par carte bancaire ou mobile money.`;
+  const description = fundraiser.description ?? catalogT('fr', 'cagnotte.meta.genericDescription');
 
   return {
-    title: `${fundraiser.title} — Cagnotte solidaire`,
+    title: `${fundraiser.title} — ${catalogT('fr', 'cagnotte.meta.titleSuffix')}`,
     description,
     openGraph: {
       title: fundraiser.title,

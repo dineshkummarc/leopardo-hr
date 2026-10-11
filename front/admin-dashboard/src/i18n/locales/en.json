@@ -8676,6 +8676,11 @@
     "supporters": {
       "title": "Supporters"
     },
-    "poweredBy": "Powered by Leopardo — Solidarity fundraisers"
+    "poweredBy": "Powered by Leopardo — Solidarity fundraisers",
+    "meta": {
+      "genericTitle": "Solidarity fundraiser — Leopardo",
+      "genericDescription": "Support a cause in seconds: donate by bank card or mobile money.",
+      "titleSuffix": "Solidarity fundraiser"
+    }
   }
 }

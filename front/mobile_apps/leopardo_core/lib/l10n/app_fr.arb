@@ -5744,5 +5744,8 @@
   "cagnotteErrorsGeneric": "Une erreur est survenue. Réessayez.",
   "cagnotteEnded": "Cette cagnotte n'accepte plus de contributions pour le moment.",
   "cagnotteSupportersTitle": "Ils soutiennent",
-  "cagnottePoweredby": "Propulsé par Leopardo — Cagnottes solidaires"
+  "cagnottePoweredby": "Propulsé par Leopardo — Cagnottes solidaires",
+  "cagnotteMetaGenerictitle": "Cagnotte solidaire — Leopardo",
+  "cagnotteMetaGenericdescription": "Soutenez une cause en quelques secondes : don par carte bancaire ou mobile money.",
+  "cagnotteMetaTitlesuffix": "Cagnotte solidaire"
 }

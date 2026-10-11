@@ -8815,6 +8815,11 @@
     "supporters": {
       "title": "Destekçiler"
     },
-    "poweredBy": "Leopardo tarafından — Dayanışma kampanyaları"
+    "poweredBy": "Leopardo tarafından — Dayanışma kampanyaları",
+    "meta": {
+      "genericTitle": "Dayanışma kampanyası — Leopardo",
+      "genericDescription": "Bir amacı saniyeler içinde destekleyin: banka kartı veya mobil para ile bağış yapın.",
+      "titleSuffix": "Dayanışma kampanyası"
+    }
   }
 }

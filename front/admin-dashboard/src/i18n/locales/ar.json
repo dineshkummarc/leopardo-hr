@@ -8809,6 +8809,11 @@
     "supporters": {
       "title": "الداعمون"
     },
-    "poweredBy": "مدعوم من Leopardo — حملات تضامن"
+    "poweredBy": "مدعوم من Leopardo — حملات تضامن",
+    "meta": {
+      "genericTitle": "حملة تضامن — Leopardo",
+      "genericDescription": "ادعم قضية في ثوانٍ: تبرع بالبطاقة البنكية أو الموبايل موني.",
+      "titleSuffix": "حملة تضامن"
+    }
   }
 }

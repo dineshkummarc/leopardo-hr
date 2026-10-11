@@ -5744,5 +5744,8 @@
   "cagnotteErrorsGeneric": "Something went wrong. Please try again.",
   "cagnotteEnded": "This fundraiser is not accepting contributions at the moment.",
   "cagnotteSupportersTitle": "Supporters",
-  "cagnottePoweredby": "Powered by Leopardo — Solidarity fundraisers"
+  "cagnottePoweredby": "Powered by Leopardo — Solidarity fundraisers",
+  "cagnotteMetaGenerictitle": "Solidarity fundraiser — Leopardo",
+  "cagnotteMetaGenericdescription": "Support a cause in seconds: donate by bank card or mobile money.",
+  "cagnotteMetaTitlesuffix": "Solidarity fundraiser"
 }

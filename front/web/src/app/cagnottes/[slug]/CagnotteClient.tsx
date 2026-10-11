@@ -221,7 +221,7 @@ export default function CagnotteClient({ slug }: { slug: string }) {
         void (async () => {
           if (Date.now() - startedAt > POLL_TIMEOUT_MS) {
             stopPolling();
-            return; // l'écran d'attente reste affiché (paiement lent côté opérateur)
+            return; // keep the pending screen visible on slow operator confirmations
           }
           try {
             const response = await apiFetch(initiation.status_url);

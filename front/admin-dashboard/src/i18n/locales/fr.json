@@ -8682,6 +8682,11 @@
     "supporters": {
       "title": "Ils soutiennent"
     },
-    "poweredBy": "Propulsé par Leopardo — Cagnottes solidaires"
+    "poweredBy": "Propulsé par Leopardo — Cagnottes solidaires",
+    "meta": {
+      "genericTitle": "Cagnotte solidaire — Leopardo",
+      "genericDescription": "Soutenez une cause en quelques secondes : don par carte bancaire ou mobile money.",
+      "titleSuffix": "Cagnotte solidaire"
+    }
   }
 }

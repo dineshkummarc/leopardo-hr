@@ -5744,5 +5744,8 @@
   "cagnotteErrorsGeneric": "Bir hata oluştu. Tekrar deneyin.",
   "cagnotteEnded": "Bu kampanya şu anda katkı kabul etmiyor.",
   "cagnotteSupportersTitle": "Destekçiler",
-  "cagnottePoweredby": "Leopardo tarafından — Dayanışma kampanyaları"
+  "cagnottePoweredby": "Leopardo tarafından — Dayanışma kampanyaları",
+  "cagnotteMetaGenerictitle": "Dayanışma kampanyası — Leopardo",
+  "cagnotteMetaGenericdescription": "Bir amacı saniyeler içinde destekleyin: banka kartı veya mobil para ile bağış yapın.",
+  "cagnotteMetaTitlesuffix": "Dayanışma kampanyası"
 }
