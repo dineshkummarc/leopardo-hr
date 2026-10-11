@@ -87,11 +87,32 @@
 | FUND-074 | Console admin : page « Cagnottes solidaires — Paramétrage » + route + entrée fiche entreprise (label, icône, surface) + i18n ×4 | ✅ |
 | FUND-075 | Tests `FundraisingSettingsTest` (défauts, upsert unique, validation, RBAC/flag, consommation publique) + OpenAPI | ✅ |
 
+## Lot I — Activation onboarding (branche `feat/fundraising-onboarding-activation`)
+
+| ID | Tâche | Statut |
+|---|---|---|
+| FUND-080 | Manifest `FundraisingManifest` (contrat Core v2) enregistré au `SolutionCatalogue` + industrie `SolutionIndustry::Solidarity` | ✅ |
+| FUND-081 | Secteur `association` de l'entretien de préparation → solution `fundraising` (planner + front + i18n ×4) | ✅ |
+| FUND-082 | Tests : conformité 11 manifests, mapping `association → fundraising`, sanitize | ✅ |
+
+## Lot J — Espace tenant de gestion (branche `feat/fundraising-tenant-ui`)
+
+| ID | Tâche | Statut |
+|---|---|---|
+| FUND-090 | Page `/fundraising` (dashboard tenant) : création, publication/pause/clôture, lien public, reversements + paramétrage module (FUND-070 côté tenant) | ✅ |
+| FUND-091 | Navigation client (client-features, préfixes protégés) + i18n ×4 + tests jest | ✅ |
+
+## Lot K — Visibilité vitrine (branche `feat/vitrine-cagnottes`)
+
+| ID | Tâche | Statut |
+|---|---|---|
+| FUND-095 | Carte « Cagnottes solidaires » home vitrine + page pack `/packs/cagnottes` (×4 locales) | ✅ |
+
 ## Phase 2 (hors ce lot)
 
 | ID | Tâche | Statut |
 |---|---|---|
-| FUND-100 | Front public (page cagnotte, partage OG, QR) | ⬜ |
+| FUND-100 | Front public (page cagnotte, partage OG, QR) — livré (branche `feat/fundraising-public-page`, #8402) : `/cagnottes/{slug}`, don carte (redirection Stripe) + mobile money (USSD + polling), mur des soutiens, i18n ×4 | ✅ |
 | FUND-101 | Adaptateurs production mobile money (CinetPay/PayDunya/PVIT) | ⬜ |
 | FUND-102 | openapi.yaml + SDK dev-hub | 🚧 openapi.yaml livré (#8379 reprise CI) — SDK dev-hub reste à faire |
 | FUND-103 | KYC bénéficiaire, remboursements, dons récurrents, reçus PDF | ⬜ |

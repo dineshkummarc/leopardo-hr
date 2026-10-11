@@ -677,3 +677,71 @@ propagation i18n du 2026-09-14 (PR #7350).
 
 - Check requis « Frontend — ESLint + TypeScript » sur la page et la fiche entreprise ; build `vite` + garde CSP.
 - Parité et checksums i18n (`validate.js`), garde « no new hardcoded strings » (diff), parité catalogues backend ×4.
+
+
+## Addendum 2026-10-11 — espace tenant de gestion des cagnottes (PR #8413, issue #8412, FUND-090)
+
+**Surface** : nouvelle page protégée `/fundraising` du portail client (`front/web/src/app/(dashboard)/fundraising/`) — gestion de la verticale « Cagnottes solidaires » par le responsable du tenant (API privée `/fundraising/*`, gate `module.fundraising` + `api.manager:principal,rh`). Distincte de la page PUBLIQUE `/cagnottes/{slug}` (FUND-100).
+
+### Scénarios de recette
+
+1. Tenant avec flag `fundraising` : l'entrée « Cagnottes » apparaît dans la navigation (`client-features`, featureKeys `fundraising`) ; la page liste les cagnottes (statut, collecté / objectif, contributions, solde disponible).
+2. Création : le formulaire produit un brouillon (`POST /fundraising/fundraisers`) ; « Publier » le rend encaissable et expose le lien public `/cagnottes/{slug}` (copie en 1 clic) ; pause / reprise / clôture fonctionnent par transitions dédiées.
+3. Reversement : la demande (`POST /fundraising/fundraisers/{id}/payouts`) est pré-remplie au solde disponible (règle de solde côté API) ; la liste par cagnotte suit les statuts et « Marquer versé » clôt le cycle (`requested → processing → paid`).
+4. Paramétrage : l'onglet dédié lit (`GET`) et enregistre (`PUT`) méthodes offertes, min/max et montants suggérés par défaut, anonymat / messages / mur des soutiens — appliqué immédiatement à la page publique.
+5. Tenant sans le flag : bannière « verticale non activée » (403/404 fail-closed, jamais d'erreur brute).
+6. i18n : page intégrale fr/en/ar/tr via le catalogue `cagnottesModule.*` (zéro littéral hardcodé — garde « no new hardcoded strings »).
+
+### Vérification automatique
+
+- Jest `src/app/(dashboard)/fundraising/__tests__/fundraising-page.test.tsx` (4 scénarios : liste + publication, création, fail-closed, paramétrage) — check « Frontend — ESLint + TypeScript ».
+- Parité i18n (`validate.js`), catalogues mobiles `.arb` régénérés (`sync-mobile.js`, garde `validate-and-sync`).
+## Addendum 2026-10-11 — page publique de don « cagnotte » (PR #8411, issue #8402, FUND-100)
+
+**Surface** : nouvelle page PUBLIQUE vitrine `/cagnottes/{slug}` (`front/web/src/app/cagnottes/[slug]/`) — surface d'encaissement de la verticale « Cagnottes solidaires », adossée à l'API publique isolée (`throttle:shop-public`, DTO zéro donnée interne).
+
+### Scénarios de recette
+
+1. Slug valide : la page affiche titre, bénéficiaire, catégorie, progression (collecté / objectif, contributeurs) et les seules méthodes offertes par le paramétrage tenant (`enabled_methods`).
+2. Don mobile money : montant suggéré ou libre borné, téléphone requis → `POST /public/fundraisers/{slug}/contribute` → écran d'attente (code USSD + instructions) avec polling de statut toutes les 4 s → écran de remerciement à confirmation (référence `FC-…`).
+3. Don carte : soumission → redirection vers l'URL Stripe Checkout (`redirect_url` de l'initiation).
+4. Mur des soutiens : visible si `show_supporters`, avec anonymat et messages honorés ; désactivé → section absente (404 uniforme côté API).
+5. Partage : copie du lien, QR code du lien courant, métadonnées Open Graph servies par `generateMetadata` (titre/description/visuel de la cagnotte).
+6. Slug inconnu ou verticale coupée : état « Cagnotte introuvable » (404 uniforme, anti-énumération).
+7. i18n : page intégrale fr/en/ar/tr + RTL via le catalogue `cagnotte.*` (zéro littéral hardcodé — garde « no new hardcoded strings »).
+
+### Vérification automatique
+
+- Jest `src/app/cagnottes/__tests__/cagnotte-page.test.tsx` (4 scénarios : don mobile money bout-en-bout, slug inconnu, mur désactivé, cagnotte close) — check « Frontend — ESLint + TypeScript ».
+- Parité et checksums i18n (`validate.js`), catalogues mobiles `.arb` régénérés (`sync-mobile.js`, garde `validate-and-sync`).
+- Gardes vitrine : mojibake, french-copy, pages orphelines (hors `(landing)` — non concernée).
+## Addendum 2026-10-11 — secteur « Association / ONG » de l'entretien de préparation (PR #8401, issue #8400, FUND-080)
+
+**Surface** : l'entretien de préparation (`SetupInterview.tsx`, parcours post-signup) propose une nouvelle valeur de secteur « Association / ONG » (`association`) — mappée côté `SetupInterviewPlanner` à la solution `fundraising` (manifest `FundraisingManifest` enregistré au `SolutionCatalogue`, industrie `SolutionIndustry::Solidarity`).
+
+### Scénarios de recette
+
+1. Tenant qui choisit « Association / ONG » à l'entretien : à la complétion (`POST /setup-interview`), la verticale `fundraising` est activée (feature flag tenant) — le module « Cagnottes solidaires » devient accessible (API privée `/fundraising/*`, console de paramétrage).
+2. Repli fail-closed : une valeur de secteur inconnue reste ignorée (aucune activation), la valeur `association` passe le `sanitize` (allowlist étendue).
+3. i18n : le libellé de l'option passe par le catalogue (`setupInterview.questions.sector.options.association` × fr/en/ar/tr), zéro littéral hardcodé.
+
+### Vérification automatique
+
+- Unitaires `SetupInterviewPlannerTest` : mapping `association → fundraising` + `sanitize` du nouveau secteur.
+- Feature `SolutionManifestConformanceTest` : 11 manifests enregistrés et conformes au contrat Core v2.
+- Parité i18n (`validate.js`), catalogues mobiles `.arb` régénérés (`sync-mobile.js`).
+
+## Addendum 2026-10-11 — visibilité vitrine de la verticale « Cagnottes solidaires » (PR #8415, issue #8414, FUND-095)
+
+**Surface** : section « Verticales métier » de la home vitrine — nouvelle carte « Cagnottes solidaires » (icône Gift) pointant vers la nouvelle page pack `/packs/cagnottes` (mécanisme data-driven `pack-pages.ts`).
+
+### Scénarios de recette
+
+1. La home affiche 5 cartes verticales dont « Cagnottes solidaires » ; le lien mène à `/packs/cagnottes` (×4 locales fr/en/ar/tr).
+2. `/packs/cagnottes` présente la promesse (lien public de collecte, carte + mobile money, reversement au bénéficiaire), les bénéfices, le contenu inclus et les CTA (création d'espace / conseiller) ; un slug inconnu reste en 404 (`isPackVertical`).
+3. i18n : copy ×4 complète via `pack-pages.ts` (chemin exempté PA2-I18N-014), zéro régression sur les 3 packs existants.
+
+### Vérification automatique
+
+- Jest `VerticalsAndZKTeco.test.tsx` (carte présente + lien `/packs/cagnottes`) — check « Frontend — ESLint + TypeScript ».
+- Gardes vitrine : mojibake, french-copy, pages orphelines (`/packs/cagnottes` référencé depuis la home).
