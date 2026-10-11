@@ -677,3 +677,24 @@ propagation i18n du 2026-09-14 (PR #7350).
 
 - Check requis « Frontend — ESLint + TypeScript » sur la page et la fiche entreprise ; build `vite` + garde CSP.
 - Parité et checksums i18n (`validate.js`), garde « no new hardcoded strings » (diff), parité catalogues backend ×4.
+
+
+## Addendum 2026-10-11 — page publique de don « cagnotte » (PR #8411, issue #8402, FUND-100)
+
+**Surface** : nouvelle page PUBLIQUE vitrine `/cagnottes/{slug}` (`front/web/src/app/cagnottes/[slug]/`) — surface d'encaissement de la verticale « Cagnottes solidaires », adossée à l'API publique isolée (`throttle:shop-public`, DTO zéro donnée interne).
+
+### Scénarios de recette
+
+1. Slug valide : la page affiche titre, bénéficiaire, catégorie, progression (collecté / objectif, contributeurs) et les seules méthodes offertes par le paramétrage tenant (`enabled_methods`).
+2. Don mobile money : montant suggéré ou libre borné, téléphone requis → `POST /public/fundraisers/{slug}/contribute` → écran d'attente (code USSD + instructions) avec polling de statut toutes les 4 s → écran de remerciement à confirmation (référence `FC-…`).
+3. Don carte : soumission → redirection vers l'URL Stripe Checkout (`redirect_url` de l'initiation).
+4. Mur des soutiens : visible si `show_supporters`, avec anonymat et messages honorés ; désactivé → section absente (404 uniforme côté API).
+5. Partage : copie du lien, QR code du lien courant, métadonnées Open Graph servies par `generateMetadata` (titre/description/visuel de la cagnotte).
+6. Slug inconnu ou verticale coupée : état « Cagnotte introuvable » (404 uniforme, anti-énumération).
+7. i18n : page intégrale fr/en/ar/tr + RTL via le catalogue `cagnotte.*` (zéro littéral hardcodé — garde « no new hardcoded strings »).
+
+### Vérification automatique
+
+- Jest `src/app/cagnottes/__tests__/cagnotte-page.test.tsx` (4 scénarios : don mobile money bout-en-bout, slug inconnu, mur désactivé, cagnotte close) — check « Frontend — ESLint + TypeScript ».
+- Parité et checksums i18n (`validate.js`), catalogues mobiles `.arb` régénérés (`sync-mobile.js`, garde `validate-and-sync`).
+- Gardes vitrine : mojibake, french-copy, pages orphelines (hors `(landing)` — non concernée).
