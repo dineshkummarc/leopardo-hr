@@ -95,6 +95,12 @@
 | FUND-081 | Secteur `association` de l'entretien de préparation → solution `fundraising` (planner + front + i18n ×4) | ✅ |
 | FUND-082 | Tests : conformité 11 manifests, mapping `association → fundraising`, sanitize | ✅ |
 
+## Lot K — Visibilité vitrine (branche `feat/vitrine-cagnottes`)
+
+| ID | Tâche | Statut |
+|---|---|---|
+| FUND-095 | Carte « Cagnottes solidaires » home vitrine + page pack `/packs/cagnottes` (×4 locales) | ✅ |
+
 ## Phase 2 (hors ce lot)
 
 | ID | Tâche | Statut |
