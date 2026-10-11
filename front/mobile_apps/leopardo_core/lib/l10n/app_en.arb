@@ -5761,6 +5761,7 @@
   "cagnottesmodulePayoutMethod": "Payout method",
   "cagnottesmodulePayoutRecipient": "Recipient name",
   "cagnottesmodulePayoutAccount": "Account / number",
+  "cagnottesmodulePayoutAccountplaceholder": "+221… / IBAN",
   "cagnottesmodulePayoutSubmit": "Send request",
   "cagnottesmodulePayoutEmpty": "No payout for this fundraiser.",
   "cagnottesmodulePayoutMarkpaid": "Mark as paid",

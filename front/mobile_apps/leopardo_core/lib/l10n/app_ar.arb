@@ -5761,6 +5761,7 @@
   "cagnottesmodulePayoutMethod": "وسيلة التحويل",
   "cagnottesmodulePayoutRecipient": "اسم المستفيد",
   "cagnottesmodulePayoutAccount": "الحساب / الرقم",
+  "cagnottesmodulePayoutAccountplaceholder": "+221… / آيبان",
   "cagnottesmodulePayoutSubmit": "إرسال الطلب",
   "cagnottesmodulePayoutEmpty": "لا توجد تحويلات لهذه الحملة.",
   "cagnottesmodulePayoutMarkpaid": "تأكيد الدفع",

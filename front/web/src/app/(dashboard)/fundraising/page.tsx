@@ -567,7 +567,7 @@ export default function CagnottesPage() {
                       </div>
                       <div>
                         <label className={labelClass}>{t(locale, 'cagnottesModule.payout.account')} *</label>
-                        <input className={inputClass} value={payoutForm.recipient_account} onChange={(e) => setPayoutForm({ ...payoutForm, recipient_account: e.target.value })} placeholder="+221… / IBAN" />
+                        <input className={inputClass} value={payoutForm.recipient_account} onChange={(e) => setPayoutForm({ ...payoutForm, recipient_account: e.target.value })} placeholder={t(locale, 'cagnottesModule.payout.accountPlaceholder')} />
                       </div>
                     </div>
                     <div className="mt-3 flex gap-2">
@@ -668,10 +668,10 @@ export default function CagnottesPage() {
 
           <div className="mt-5 space-y-2">
             {([
-              ['allow_anonymous', 'cagnottesModule.settings.allowAnonymous', 'Contributions anonymes autorisées'],
-              ['allow_messages', 'cagnottesModule.settings.allowMessages', 'Messages des contributeurs autorisés'],
-              ['show_supporters', 'cagnottesModule.settings.showSupporters', 'Mur des soutiens visible publiquement'],
-            ] as const).map(([key, i18nKey, fallback]) => (
+              ['allow_anonymous', 'cagnottesModule.settings.allowAnonymous'],
+              ['allow_messages', 'cagnottesModule.settings.allowMessages'],
+              ['show_supporters', 'cagnottesModule.settings.showSupporters'],
+            ] as const).map(([key, i18nKey]) => (
               <label key={key} className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3">
                 <input
                   type="checkbox"
@@ -679,7 +679,7 @@ export default function CagnottesPage() {
                   onChange={(e) => setSettingsForm({ ...settingsForm, [key]: e.target.checked })}
                   className="h-4 w-4 rounded border-slate-300"
                 />
-                <span className="text-sm font-bold text-slate-700">{t(locale, i18nKey, fallback)}</span>
+                <span className="text-sm font-bold text-slate-700">{t(locale, i18nKey)}</span>
               </label>
             ))}
           </div>

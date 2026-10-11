@@ -7298,6 +7298,7 @@
       "method": "Ödeme yöntemi",
       "recipient": "Alıcı adı",
       "account": "Hesap / numara",
+      "accountPlaceholder": "+221… / IBAN",
       "submit": "Talebi gönder",
       "empty": "Bu kampanya için ödeme yok.",
       "markPaid": "Ödendi işaretle"

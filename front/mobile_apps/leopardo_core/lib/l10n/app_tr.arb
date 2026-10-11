@@ -5761,6 +5761,7 @@
   "cagnottesmodulePayoutMethod": "Ödeme yöntemi",
   "cagnottesmodulePayoutRecipient": "Alıcı adı",
   "cagnottesmodulePayoutAccount": "Hesap / numara",
+  "cagnottesmodulePayoutAccountplaceholder": "+221… / IBAN",
   "cagnottesmodulePayoutSubmit": "Talebi gönder",
   "cagnottesmodulePayoutEmpty": "Bu kampanya için ödeme yok.",
   "cagnottesmodulePayoutMarkpaid": "Ödendi işaretle",

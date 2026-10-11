@@ -5761,6 +5761,7 @@
   "cagnottesmodulePayoutMethod": "Moyen de reversement",
   "cagnottesmodulePayoutRecipient": "Nom du bénéficiaire",
   "cagnottesmodulePayoutAccount": "Compte / numéro",
+  "cagnottesmodulePayoutAccountplaceholder": "+221… / IBAN",
   "cagnottesmodulePayoutSubmit": "Envoyer la demande",
   "cagnottesmodulePayoutEmpty": "Aucun reversement pour cette cagnotte.",
   "cagnottesmodulePayoutMarkpaid": "Marquer versé",

@@ -8827,7 +8827,8 @@
       "account": "Hesap / numara",
       "submit": "Talebi gönder",
       "empty": "Bu kampanya için ödeme yok.",
-      "markPaid": "Ödendi işaretle"
+      "markPaid": "Ödendi işaretle",
+      "accountPlaceholder": "+221… / IBAN"
     },
     "payoutMethods": {
       "mobile_money": "Mobil para",

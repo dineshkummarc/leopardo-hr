@@ -7298,6 +7298,7 @@
       "method": "Moyen de reversement",
       "recipient": "Nom du bénéficiaire",
       "account": "Compte / numéro",
+      "accountPlaceholder": "+221… / IBAN",
       "submit": "Envoyer la demande",
       "empty": "Aucun reversement pour cette cagnotte.",
       "markPaid": "Marquer versé"

@@ -8688,7 +8688,8 @@
       "account": "Account / number",
       "submit": "Send request",
       "empty": "No payout for this fundraiser.",
-      "markPaid": "Mark as paid"
+      "markPaid": "Mark as paid",
+      "accountPlaceholder": "+221… / IBAN"
     },
     "payoutMethods": {
       "mobile_money": "Mobile money",

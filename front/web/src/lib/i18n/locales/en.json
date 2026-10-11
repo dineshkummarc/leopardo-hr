@@ -7298,6 +7298,7 @@
       "method": "Payout method",
       "recipient": "Recipient name",
       "account": "Account / number",
+      "accountPlaceholder": "+221… / IBAN",
       "submit": "Send request",
       "empty": "No payout for this fundraiser.",
       "markPaid": "Mark as paid"

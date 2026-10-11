@@ -207,6 +207,7 @@ export const config = {
     '/social-marketing/:path*',
     '/restaurant/:path*', // BC-25 portail client (split /restaurant → /restaurateur)
     '/showcase/:path*', // BC-27 site vitrine tenant (management) — gate session
+    '/fundraising/:path*', // FUND-090 gestion des cagnottes (espace tenant) — gate session
     '/cameras/:path*', // BC-19 mur de caméras + détail (#7425) — gate session
     '/fleet/:path*', // #7400 flotte & véhicules de service (module horizontal)
     '/crm/:path*', // #7663 CRM — gate session (source unique #3377)

@@ -8821,7 +8821,8 @@
       "account": "الحساب / الرقم",
       "submit": "إرسال الطلب",
       "empty": "لا توجد تحويلات لهذه الحملة.",
-      "markPaid": "تأكيد الدفع"
+      "markPaid": "تأكيد الدفع",
+      "accountPlaceholder": "+221… / آيبان"
     },
     "payoutMethods": {
       "mobile_money": "موبايل موني",

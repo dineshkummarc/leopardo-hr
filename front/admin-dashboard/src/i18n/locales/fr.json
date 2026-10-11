@@ -8694,7 +8694,8 @@
       "account": "Compte / numéro",
       "submit": "Envoyer la demande",
       "empty": "Aucun reversement pour cette cagnotte.",
-      "markPaid": "Marquer versé"
+      "markPaid": "Marquer versé",
+      "accountPlaceholder": "+221… / IBAN"
     },
     "payoutMethods": {
       "mobile_money": "Mobile money",
