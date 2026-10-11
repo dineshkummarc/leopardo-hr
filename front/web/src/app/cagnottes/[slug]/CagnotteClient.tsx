@@ -89,6 +89,8 @@ type ContributionInitiation = {
     instructions: string | null;
     status: string;
   };
+  // Fourni par l'API mais inutilisé côté front : contient le préfixe `/api/v1`
+  // qu'apiFetch ajoute déjà — le polling reconstruit le chemin (voir plus bas).
   status_url: string;
 };
 
@@ -224,7 +226,12 @@ export default function CagnotteClient({ slug }: { slug: string }) {
             return; // keep the pending screen visible on slow operator confirmations
           }
           try {
-            const response = await apiFetch(initiation.status_url);
+            // Le backend renvoie `status_url` AVEC le préfixe `/api/v1` —
+            // l'injecter tel quel dans apiFetch produirait
+            // `/api/v1/api/v1/public/contributions/…` (404 avalé par le catch,
+            // écran d'attente jamais résolu). Comme shop/page.tsx, on
+            // reconstruit le chemin SANS préfixe depuis la référence.
+            const response = await apiFetch(`/public/contributions/${encodeURIComponent(initiation.reference)}`, { _cacheBust: true });
             const payload = (await response.json()) as { data: ContributionStatus };
             if (payload.data.status === 'completed') {
               stopPolling();

@@ -1,3 +1,4 @@
+import { act } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { apiFetch } from '@/lib/api-client';
@@ -127,6 +128,82 @@ describe('Page publique cagnotte (FUND-100)', () => {
       contributor_phone: '+221770000000',
       website: '',
     });
+  });
+
+  it('polle le statut sur le chemin reconstruit (sans double préfixe /api/v1) et résout l\'écran au succès', async () => {
+    jest.useFakeTimers();
+    try {
+      const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+
+      mockedApiFetch
+        .mockResolvedValueOnce(jsonResponse(fundraiser))
+        .mockResolvedValueOnce(jsonResponse(supporters))
+        .mockResolvedValueOnce(jsonResponse({
+          data: {
+            reference: 'FC-TEST1234',
+            amount: 5000,
+            currency: 'XOF',
+            payment_method: 'mobile_money',
+            status: 'pending',
+            payment: {
+              provider_reference: 'SBX-1',
+              redirect_url: null,
+              ussd_code: '#144*1*1#',
+              instructions: 'Composez le code pour valider.',
+              status: 'pending',
+            },
+            // Le backend renvoie status_url AVEC le préfixe /api/v1 —
+            // apiFetch l'ajoutant déjà, le polling ne doit pas le réutiliser tel quel.
+            status_url: '/api/v1/public/contributions/FC-TEST1234',
+          },
+        }, 201))
+        // 1er tick de polling : toujours en attente.
+        .mockResolvedValueOnce(jsonResponse({ data: { reference: 'FC-TEST1234', status: 'pending', paid_at: null } }))
+        // 2e tick : confirmé.
+        .mockResolvedValueOnce(jsonResponse({ data: { reference: 'FC-TEST1234', status: 'completed', paid_at: '2026-10-11T09:12:00+00:00' } }));
+
+      render(<CagnotteClient slug="aide-fatou" />);
+
+      expect(await screen.findByText('Aide pour Fatou')).toBeInTheDocument();
+
+      await user.click(screen.getByRole('button', { name: /5[\s\u202f]?000|5[,.]?000/ }));
+      await user.click(screen.getByRole('button', { name: /Mobile money/ }));
+      await user.type(screen.getByPlaceholderText(/Numéro mobile money/), '+221770000000');
+      await user.click(screen.getByRole('button', { name: /Donner/ }));
+
+      // Écran d'attente avec code USSD
+      expect(await screen.findByText('#144*1*1#')).toBeInTheDocument();
+
+      // 1er tick (4 s) — polling sur le chemin SANS préfixe /api/v1.
+      await act(async () => {
+        jest.advanceTimersByTime(4000);
+      });
+      const pollCalls = () => mockedApiFetch.mock.calls.filter(([endpoint]) =>
+        String(endpoint).includes('/public/contributions/'),
+      );
+      expect(pollCalls()).toHaveLength(1);
+      expect(pollCalls()[0][0]).toBe('/public/contributions/FC-TEST1234');
+      expect(String(pollCalls()[0][0])).not.toContain('/api/v1');
+      expect(pollCalls()[0][1]).toMatchObject({ _cacheBust: true });
+      // Toujours en attente : l'écran ne change pas.
+      expect(screen.getByText('Paiement en attente')).toBeInTheDocument();
+
+      // 2e tick — completed : l'écran se résout en remerciement.
+      await act(async () => {
+        jest.advanceTimersByTime(4000);
+      });
+      expect(await screen.findByText('Merci pour votre don !')).toBeInTheDocument();
+      expect(screen.getByText(/FC-TEST1234/)).toBeInTheDocument();
+      expect(screen.queryByText('Paiement en attente')).not.toBeInTheDocument();
+
+      // Le polling s'arrête après la confirmation.
+      await act(async () => {
+        jest.advanceTimersByTime(4000);
+      });
+      expect(pollCalls()).toHaveLength(2);
+    } finally {
+      jest.useRealTimers();
+    }
   });
 
   it('affiche un état introuvable pour un slug inconnu', async () => {
