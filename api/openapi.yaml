@@ -37,6 +37,8 @@ servers:
 security:
 - BearerAuth: []
 tags:
+- name: Fundraising
+  description: 'BC-34@@FUND@@ (#8379) — verticale Cagnottes solidaires : liens publics de collecte, contributions carte et mobile money, reversements au bénéficiaire.'
 - name: Health
   description: Groupe d'opérations Health
 - name: Auth
@@ -115,7 +117,642 @@ tags:
   description: 'BC-31 HEALTHMANAGER — solution verticale hôpitaux & cliniques privées (HC-001 #7785 à HC-008 #7792) : structure, patients, rendez-vous, consultations, ordonnances, hospitalisations, facturation des soins.'
 - name: Hospitality
   description: 'BC-32 HOSPITALITY — solution verticale HospitalityManager (hôtels, résidences, gestion locative multi-sites, HOSP-001 #7943 → HOSP-008 #7950) : établissements, inventaire, réservations guichet et en ligne, baux et loyers.'
+- name: Geo
+  description: 'BC-34 GEO — core géospatial transverse (GEO-05 #8354) : distance géodésique, recherche « les plus proches » (registry opt-in geo.searchables), diagnostic PostGIS. Réutilisable par toute verticale (VTC en premier, BC-35).'
+- name: Vtc
+  description: 'BC-35 VTC — verticale VTC/taxi (spec MODULE_GEOCORE_ET_VERTICAL_VTC, VTC-01 #8357 → VTC-07 #8363) : estimation de tarif, réservation idempotente, dispatch au chauffeur le plus proche via le core geo (BC-34), cycle de course complet, console de répartition, administration (chauffeurs, véhicules, profils tarifaires). RBAC deny-by-default (docs/architecture/VTC_RBAC.md).'
+
 paths:
+  /public/fundraisers/{slug}:
+    get:
+      tags:
+      - Fundraising
+      summary: Fiche publique d'une cagnotte
+      description: >-
+        BC-34@@FUND@@ (#8379) — surface publique isolée (aucun auth,
+        throttle `shop-public`) : résolution du tenant par annuaire public
+        (slug → company), garde 404 uniforme si le flag `fundraising` est
+        coupé ou si la cagnotte n'est pas publiée. DTO public allowlist :
+        jamais company_id ni identifiants internes.
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: '^[A-Za-z0-9\-_]{1,160}$'
+      responses:
+        '200':
+          description: Fiche publique (titre, description, objectif, collecté, nombre de contributions, montants suggérés)
+        '404':
+          description: Cagnotte introuvable, non publiée ou verticale désactivée
+  /public/fundraisers/{slug}/supporters:
+    get:
+      tags:
+      - Fundraising
+      summary: Mur public des soutiens d'une cagnotte
+      description: >-
+        Liste publique des contributions confirmées : prénom masqué par
+        défaut, montant exposé uniquement si le donateur l'a accepté.
+        Pagination standard.
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: '^[A-Za-z0-9\-_]{1,160}$'
+      responses:
+        '200':
+          description: Soutiens confirmés (nom d'affichage, montant public ou masqué, message, date)
+        '404':
+          description: Cagnotte introuvable, non publiée ou verticale désactivée
+  /public/fundraisers/{slug}/contribute:
+    post:
+      tags:
+      - Fundraising
+      summary: Initier une contribution publique
+      description: >-
+        Initiation d'une contribution : garde-fous montant min/max et
+        fenêtre de collecte (422), honeypot anti-bot. Méthodes :
+        `card` → session Stripe Checkout (URL de redirection) ;
+        `mobile_money` → push USSD/opérateur (référence à poller) ;
+        `cash` / `bank_transfer` → instructions de règlement manuel,
+        confirmation par le responsable du tenant.
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: '^[A-Za-z0-9\-_]{1,160}$'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - amount
+              - method
+              properties:
+                amount:
+                  type: number
+                  description: Montant en unité mineure de la devise de la cagnotte
+                method:
+                  type: string
+                  enum: [card, mobile_money, cash, bank_transfer]
+                supporter_name:
+                  type: string
+                supporter_contact:
+                  type: string
+                is_anonymous:
+                  type: boolean
+                is_amount_public:
+                  type: boolean
+                message:
+                  type: string
+                website:
+                  type: string
+                  description: Honeypot anti-bot — doit rester vide
+      responses:
+        '201':
+          description: Contribution initiée (référence `FC-…`, payload propre à la passerelle)
+        '404':
+          description: Cagnotte introuvable, non publiée ou verticale désactivée
+        '422':
+          description: Montant hors bornes, cagnotte inactive ou fenêtre de collecte dépassée
+  /public/contributions/{reference}:
+    get:
+      tags:
+      - Fundraising
+      summary: Statut public d'une contribution (polling)
+      description: >-
+        Polling du statut d'une contribution par sa référence publique
+        `FC-…` (pending → completed/failed). Aucune donnée sensible exposée.
+      parameters:
+      - name: reference
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: '^FC-[A-Z0-9]{1,32}$'
+      responses:
+        '200':
+          description: Statut courant de la contribution
+        '404':
+          description: Référence inconnue
+  /fundraising/fundraisers:
+    get:
+      tags:
+      - Fundraising
+      summary: Liste des cagnottes du tenant
+      description: >-
+        Gestion tenant (auth Sanctum + gate `module.fundraising`
+        fail-closed + RBAC `api.manager:principal,rh`). Filtrable par
+        statut. Isolation tenant fail-closed.
+      responses:
+        '200':
+          description: Cagnottes du tenant (paginé)
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+    post:
+      tags:
+      - Fundraising
+      summary: Créer une cagnotte
+      description: >-
+        Création en brouillon : titre, bénéficiaire, catégorie, objectif
+        optionnel, montants suggérés, bornes min/max, fenêtre de collecte.
+        Slug public généré côté serveur (unique tenant).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - title
+              - beneficiary_name
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                beneficiary_name:
+                  type: string
+                beneficiary_contact:
+                  type: string
+                category:
+                  type: string
+                goal_amount:
+                  type: number
+                currency:
+                  type: string
+                suggested_amounts:
+                  type: array
+                  items:
+                    type: number
+                min_amount:
+                  type: number
+                max_amount:
+                  type: number
+                starts_at:
+                  type: string
+                  format: date-time
+                ends_at:
+                  type: string
+                  format: date-time
+      responses:
+        '201':
+          description: Cagnotte créée (brouillon)
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '422':
+          description: Payload invalide
+  /fundraising/fundraisers/{fundraiser}:
+    get:
+      tags:
+      - Fundraising
+      summary: Détail d'une cagnotte
+      parameters:
+      - name: fundraiser
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Cagnotte (compteurs temps réel inclus)
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '404':
+          description: Introuvable (ou autre tenant)
+    put:
+      tags:
+      - Fundraising
+      summary: Mettre à jour une cagnotte
+      description: Mise à jour tant que la cagnotte n'est pas clôturée/annulée.
+      parameters:
+      - name: fundraiser
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Cagnotte mise à jour
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '404':
+          description: Introuvable (ou autre tenant)
+        '422':
+          description: Transition d'état interdite ou payload invalide
+  /fundraising/fundraisers/{fundraiser}/publish:
+    post:
+      tags:
+      - Fundraising
+      summary: Publier une cagnotte
+      description: Brouillon → active ; crée l'entrée de l'annuaire public (slug → tenant).
+      parameters:
+      - name: fundraiser
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Cagnotte publiée
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '404':
+          description: Introuvable (ou autre tenant)
+        '422':
+          description: Transition d'état interdite
+  /fundraising/fundraisers/{fundraiser}/pause:
+    post:
+      tags:
+      - Fundraising
+      summary: Mettre une cagnotte en pause
+      description: Active → en pause ; la surface publique répond 404 tant que la pause est active.
+      parameters:
+      - name: fundraiser
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Cagnotte en pause
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '404':
+          description: Introuvable (ou autre tenant)
+        '422':
+          description: Transition d'état interdite
+  /fundraising/fundraisers/{fundraiser}/close:
+    post:
+      tags:
+      - Fundraising
+      summary: Clôturer une cagnotte
+      description: Clôture définitive de la collecte ; les reversements restent possibles sur le solde.
+      parameters:
+      - name: fundraiser
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Cagnotte clôturée
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '404':
+          description: Introuvable (ou autre tenant)
+        '422':
+          description: Transition d'état interdite
+  /fundraising/fundraisers/{fundraiser}/cancel:
+    post:
+      tags:
+      - Fundraising
+      summary: Annuler une cagnotte
+      description: >-
+        Annulation refusée dès qu'une contribution est confirmée
+        (argent = strict) — réservée aux brouillons et cagnottes sans
+        encaissement.
+      parameters:
+      - name: fundraiser
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Cagnotte annulée
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '404':
+          description: Introuvable (ou autre tenant)
+        '422':
+          description: Annulation refusée (contributions confirmées)
+  /fundraising/fundraisers/{fundraiser}/contributions:
+    get:
+      tags:
+      - Fundraising
+      summary: Contributions d'une cagnotte
+      parameters:
+      - name: fundraiser
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Contributions (paginé, filtrable par statut/méthode)
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '404':
+          description: Introuvable (ou autre tenant)
+  /fundraising/contributions/{contribution}/confirm:
+    post:
+      tags:
+      - Fundraising
+      summary: Confirmer un règlement manuel
+      description: >-
+        Confirmation par le responsable d'une contribution `cash` /
+        `bank_transfer` reçue : règlement transactionnel (compteurs
+        cagnotte, auto-clôture à objectif atteint).
+      parameters:
+      - name: contribution
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Contribution confirmée
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '404':
+          description: Introuvable (ou autre tenant)
+        '422':
+          description: Contribution déjà réglée ou méthode non manuelle
+  /fundraising/fundraisers/{fundraiser}/payouts:
+    get:
+      tags:
+      - Fundraising
+      summary: Reversements d'une cagnotte
+      parameters:
+      - name: fundraiser
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Reversements (paginé)
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '404':
+          description: Introuvable (ou autre tenant)
+    post:
+      tags:
+      - Fundraising
+      summary: Demander un reversement
+      description: >-
+        Règle métier : montant ≤ solde disponible de la cagnotte
+        (confirmé − déjà reversé/réservé), sinon 422
+        `PAYOUT_AMOUNT_EXCEEDS_BALANCE`. Méthodes : `mobile_money`,
+        `bank_transfer`, `cash`.
+      parameters:
+      - name: fundraiser
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - amount
+              - method
+              - destination
+              properties:
+                amount:
+                  type: number
+                method:
+                  type: string
+                  enum: [mobile_money, bank_transfer, cash]
+                destination:
+                  type: string
+                  description: Numéro mobile money, IBAN ou consignes de remise
+                note:
+                  type: string
+      responses:
+        '201':
+          description: Reversement demandé (statut pending)
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '404':
+          description: Introuvable (ou autre tenant)
+        '422':
+          description: Montant supérieur au solde disponible
+  /fundraising/payouts/{payout}/process:
+    post:
+      tags:
+      - Fundraising
+      summary: Marquer un reversement en cours
+      parameters:
+      - name: payout
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Reversement en cours de traitement
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '404':
+          description: Introuvable (ou autre tenant)
+        '422':
+          description: Transition d'état interdite
+  /fundraising/payouts/{payout}/mark-paid:
+    post:
+      tags:
+      - Fundraising
+      summary: Marquer un reversement payé
+      description: Clôture comptable du reversement (preuve/référence externe optionnelle).
+      parameters:
+      - name: payout
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Reversement payé
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '404':
+          description: Introuvable (ou autre tenant)
+        '422':
+          description: Transition d'état interdite
+  /fundraising/payouts/{payout}/fail:
+    post:
+      tags:
+      - Fundraising
+      summary: Marquer un reversement échoué
+      description: Le montant redevient disponible pour un nouveau reversement.
+      parameters:
+      - name: payout
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Reversement marqué échoué
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '404':
+          description: Introuvable (ou autre tenant)
+        '422':
+          description: Transition d'état interdite
+  /fundraising/payouts/{payout}/cancel:
+    post:
+      tags:
+      - Fundraising
+      summary: Annuler un reversement
+      description: Réservé aux reversements non traités ; le montant redevient disponible.
+      parameters:
+      - name: payout
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Reversement annulé
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '404':
+          description: Introuvable (ou autre tenant)
+        '422':
+          description: Transition d'état interdite
+  /fundraising/settings:
+    get:
+      tags:
+      - Fundraising
+      summary: Paramétrage du module Fundraising
+      description: |
+        Réglages tenant de la verticale (moyens de paiement offerts,
+        garde-fous par défaut, montants suggérés, options de la surface
+        publique). Une ligne unique par entreprise, résolue via la compagnie
+        courante — les défauts sont servis tant que rien n'a été enregistré.
+      responses:
+        '200':
+          description: Paramétrage courant (persisté ou défauts)
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+    put:
+      tags:
+      - Fundraising
+      summary: Enregistrer le paramétrage Fundraising
+      description: |
+        Upsert de la ligne unique du tenant. `enabled_methods` doit rester
+        non vide (méthodes connues : card, mobile_money, bank_transfer,
+        cash) ; `default_max_amount` doit être supérieur à
+        `default_min_amount` quand les deux sont fournis.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [enabled_methods]
+              properties:
+                enabled_methods:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: string
+                    enum: [card, mobile_money, bank_transfer, cash]
+                default_min_amount:
+                  type: number
+                  nullable: true
+                default_max_amount:
+                  type: number
+                  nullable: true
+                default_suggested_amounts:
+                  type: array
+                  nullable: true
+                  items:
+                    type: number
+                allow_anonymous:
+                  type: boolean
+                allow_messages:
+                  type: boolean
+                show_supporters:
+                  type: boolean
+      responses:
+        '200':
+          description: Paramétrage enregistré
+        '401':
+          description: Non authentifié
+        '403':
+          description: Verticale non activée ou acteur non autorisé
+        '422':
+          description: Payload invalide
+  /webhooks/fundraising/{provider}:
+    post:
+      tags:
+      - Fundraising
+      summary: Webhook provider de paiement (carte / mobile money)
+      description: >-
+        Réception des notifications providers (`stripe` : HMAC
+        `Stripe-Signature` v1 avec rotation, tolérance ±300 s ;
+        `mobile_money` : HMAC `X-Signature`). Signature invalide ou secret
+        absent → 401 `WEBHOOK_SIGNATURE_INVALID` (fail-closed) ; provider
+        inconnu → 404 ; référence inconnue ou événement inactionnable →
+        200 `ignored`. Application idempotente `(provider, event_id)` :
+        double livraison sans double crédit.
+      parameters:
+      - name: provider
+        in: path
+        required: true
+        schema:
+          type: string
+          enum: [stripe, mobile_money]
+      responses:
+        '200':
+          description: Événement appliqué (`applied`) ou ignoré (`ignored`)
+        '401':
+          description: Signature invalide ou secret absent
+        '404':
+          description: Provider inconnu
   /travel/distributor-keys:
     get:
       tags:
@@ -42040,6 +42677,1060 @@ paths:
           $ref: '#/components/responses/Error404'
         '409':
           $ref: '#/components/responses/Error409'
+  /geo/ping:
+    get:
+      tags:
+      - Geo
+      summary: Smoke test du module geo (GEO-02 #8351)
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: Module geo opérationnel pour le tenant courant
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+  /geo/distance:
+    post:
+      tags:
+      - Geo
+      summary: Distance géodésique entre deux points (GEO-05 #8354)
+      description: >-
+        Distance « à vol d'oiseau » en mètres, calculée par le core géospatial
+        (PostGIS ST_Distance sur geography si l'extension est disponible,
+        repli Haversine sinon — choix du moteur invisible de l'appelant).
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [from, to]
+              properties:
+                from:
+                  type: object
+                  required: [lat, lng]
+                  properties:
+                    lat:
+                      type: number
+                      minimum: -90
+                      maximum: 90
+                    lng:
+                      type: number
+                      minimum: -180
+                      maximum: 180
+                to:
+                  type: object
+                  required: [lat, lng]
+                  properties:
+                    lat:
+                      type: number
+                      minimum: -90
+                      maximum: 90
+                    lng:
+                      type: number
+                      minimum: -180
+                      maximum: 180
+      responses:
+        '200':
+          description: Distance calculée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      distance_m:
+                        type: integer
+                        description: Distance en mètres (arrondi)
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '422':
+          $ref: '#/components/responses/Validation422'
+  /geo/nearest:
+    get:
+      tags:
+      - Geo
+      summary: Entités les plus proches d'un point (GEO-05 #8354)
+      description: >-
+        Recherche « les plus proches » limitée aux types enregistrés dans la
+        registry opt-in geo.searchables (fail-closed : un type inconnu est
+        refusé 422 GEO_UNKNOWN_SEARCHABLE_TYPE — aucune donnée tenant n'est
+        exposée sans enregistrement explicite). Résultats triés par distance
+        croissante, bornés au tenant courant.
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: type
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: '^[a-z][a-z0-9_-]*$'
+      - name: lat
+        in: query
+        required: true
+        schema:
+          type: number
+          minimum: -90
+          maximum: 90
+      - name: lng
+        in: query
+        required: true
+        schema:
+          type: number
+          minimum: -180
+          maximum: 180
+      - name: radius_km
+        in: query
+        required: false
+        schema:
+          type: number
+          minimum: 0.1
+          maximum: 50
+          default: 10
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+      responses:
+        '200':
+          description: Résultats triés par distance croissante
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          nullable: true
+                        label:
+                          type: string
+                        distance_meters:
+                          type: integer
+                        latitude:
+                          type: number
+                          nullable: true
+                        longitude:
+                          type: number
+                          nullable: true
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '422':
+          $ref: '#/components/responses/Validation422'
+  /geo/capabilities:
+    get:
+      tags:
+      - Geo
+      summary: Diagnostic des capacités géospatiales (GEO-05 #8354, admin tenant)
+      description: >-
+        État de l'extension PostGIS et moteur de distance actif (postgis |
+        haversine). Réservé au manager principal du tenant (garde geo.admin,
+        deny-by-default). Aucune donnée métier exposée.
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: Capacités du moteur géospatial
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      postgis_available:
+                        type: boolean
+                      postgis_version:
+                        type: string
+                        nullable: true
+                      distance_engine:
+                        type: string
+                        enum: [postgis, haversine]
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+  /vtc/ping:
+    get:
+      tags:
+      - Vtc
+      summary: Smoke test de la verticale VTC (VTC-01 #8357)
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: Module vtc opérationnel pour le tenant courant
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+  /vtc/rides/estimate:
+    post:
+      tags:
+      - Vtc
+      summary: Estimation de tarif d'une course (VTC-03 #8359)
+      description: >-
+        Devis avant réservation : distance géodésique (core geo BC-34),
+        distance routière estimée (coefficient vtc.road_factor), durée
+        estimée et prix selon le profil tarifaire (défaut du tenant si
+        fare_profile_id absent). Throttle renforcé : 30 requêtes/minute.
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pickup, dropoff]
+              properties:
+                pickup:
+                  $ref: '#/components/schemas/VtcGeoPointInput'
+                dropoff:
+                  $ref: '#/components/schemas/VtcGeoPointInput'
+                fare_profile_id:
+                  type: integer
+                  minimum: 1
+                  nullable: true
+      responses:
+        '200':
+          description: Estimation calculée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VtcFareEstimate'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '422':
+          $ref: '#/components/responses/Error422'
+        '429':
+          $ref: '#/components/responses/Error429'
+  /vtc/rides:
+    post:
+      tags:
+      - Vtc
+      summary: Création idempotente d'une course (VTC-03 #8359)
+      description: >-
+        Demande de course passager. L'idempotence est garantie par
+        idempotency_key (UUID, unique par tenant) : un renvoi de la même
+        clé retourne la course existante sans en créer une nouvelle.
+        La course passe en dispatch (matching chauffeur le plus proche
+        via le core geo). Throttle renforcé : 10 requêtes/minute.
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [idempotency_key, pickup, dropoff]
+              properties:
+                idempotency_key:
+                  type: string
+                  format: uuid
+                pickup:
+                  $ref: '#/components/schemas/VtcGeoPointInput'
+                pickup_address:
+                  type: string
+                  maxLength: 500
+                  nullable: true
+                dropoff:
+                  $ref: '#/components/schemas/VtcGeoPointInput'
+                dropoff_address:
+                  type: string
+                  maxLength: 500
+                  nullable: true
+                passenger_name:
+                  type: string
+                  maxLength: 120
+                  nullable: true
+                passenger_phone:
+                  type: string
+                  maxLength: 40
+                  nullable: true
+                fare_profile_id:
+                  type: integer
+                  minimum: 1
+                  nullable: true
+      responses:
+        '201':
+          description: Course créée (ou rejouée via idempotency_key)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VtcRide'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '422':
+          $ref: '#/components/responses/Error422'
+        '429':
+          $ref: '#/components/responses/Error429'
+  /vtc/rides/{id}:
+    get:
+      tags:
+      - Vtc
+      summary: Détail d'une course (VTC-03 #8359)
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Course du tenant courant
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VtcRide'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+  /vtc/rides/{id}/cancel:
+    post:
+      tags:
+      - Vtc
+      summary: Annulation d'une course par le passager (VTC-03 #8359)
+      description: >-
+        Motif obligatoire (tracé dans le journal vtc_ride_events). Seules
+        les courses non terminées sont annulables (state machine VTC,
+        InvalidRideTransitionException sinon → 409).
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason:
+                  type: string
+                  minLength: 3
+                  maxLength: 200
+      responses:
+        '200':
+          description: Course annulée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VtcRide'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+        '422':
+          $ref: '#/components/responses/Error422'
+  /vtc/driver/offers:
+    get:
+      tags:
+      - Vtc
+      summary: Offres de course en attente du chauffeur courant (VTC-05 #8361)
+      description: >-
+        Rôle vtc.driver requis. Périmètre strictement limité aux offres
+        adressées à la fiche chauffeur de l'employé authentifié (cascade
+        de dispatch, metadata.pending_offer).
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: Offres courantes du chauffeur
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VtcDriverOffer'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+  /vtc/driver/rides/{id}/accept:
+    post:
+      tags:
+      - Vtc
+      summary: Acceptation de l'offre par le chauffeur (VTC-05 #8361)
+      description: >-
+        L'offre doit être courante (VtcOfferNotCurrentException → 409).
+        Assigne le chauffeur à la course (statut accepted) et stoppe la
+        cascade de dispatch.
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Course acceptée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VtcRide'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+  /vtc/driver/rides/{id}/decline:
+    post:
+      tags:
+      - Vtc
+      summary: Déclinaison de l'offre par le chauffeur (VTC-05 #8361)
+      description: La cascade de dispatch passe immédiatement au chauffeur suivant.
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Offre déclinée
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+  /vtc/driver/rides/{id}/arrive:
+    post:
+      tags:
+      - Vtc
+      summary: Chauffeur arrivé au point de prise en charge (VTC-05 #8361)
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Transition accepted → arrived tracée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VtcRide'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+  /vtc/driver/rides/{id}/start:
+    post:
+      tags:
+      - Vtc
+      summary: Début de la course (VTC-05 #8361)
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Transition arrived → in_progress tracée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VtcRide'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+  /vtc/driver/rides/{id}/complete:
+    post:
+      tags:
+      - Vtc
+      summary: Clôture de la course + tarif final (VTC-05 #8361)
+      description: >-
+        Recalcule final_price_minor sur le trajet réel (positions ingérées)
+        et émet l'événement VtcRideCompleted (intégration Billing en
+        évolution, hors scope v1).
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Course clôturée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VtcRide'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+  /vtc/driver/position:
+    post:
+      tags:
+      - Vtc
+      summary: Ingestion d'une position chauffeur (VTC-05 #8361)
+      description: >-
+        Idempotente sur (driver_id, recorded_at) — un renvoi de la même
+        position est un no-op. Donnée personnelle (RGPD) : rétention
+        vtc.positions_retention_days (30 j par défaut) + purge planifiée.
+        Throttle strict : 30 requêtes/minute.
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [lat, lng]
+              properties:
+                lat:
+                  type: number
+                  minimum: -90
+                  maximum: 90
+                lng:
+                  type: number
+                  minimum: -180
+                  maximum: 180
+                recorded_at:
+                  type: string
+                  format: date-time
+                  nullable: true
+                source:
+                  type: string
+                  enum: [app, traccar]
+                  nullable: true
+      responses:
+        '200':
+          description: Position enregistrée (ou rejouée)
+        '201':
+          description: Position enregistrée
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '422':
+          $ref: '#/components/responses/Error422'
+        '429':
+          $ref: '#/components/responses/Error429'
+  /vtc/driver/availability:
+    post:
+      tags:
+      - Vtc
+      summary: Bascule de disponibilité du chauffeur (VTC-05 #8361)
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [available]
+              properties:
+                available:
+                  type: boolean
+      responses:
+        '200':
+          description: Disponibilité mise à jour
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VtcDriver'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '422':
+          $ref: '#/components/responses/Error422'
+  /vtc/dispatch/rides:
+    get:
+      tags:
+      - Vtc
+      summary: Console dispatch — courses actives (VTC-06 #8362)
+      description: >-
+        Rôle vtc.dispatcher requis. Courses non clôturées du tenant
+        (hors completed/expired/cancelled), plus récentes d'abord, avec
+        l'offre en cours (pending_offer_driver_id). Polling v1.
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: Courses actives du tenant
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VtcDispatchRide'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+  /vtc/dispatch/drivers:
+    get:
+      tags:
+      - Vtc
+      summary: Console dispatch — chauffeurs et positions (VTC-06 #8362)
+      description: >-
+        Rôle vtc.dispatcher requis. Chauffeurs du tenant avec dernière
+        position connue (carte temps réel, polling v1). Accès audité
+        (données personnelles RGPD).
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: Chauffeurs du tenant
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VtcDriver'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+  /vtc/fare-profiles:
+    get:
+      tags:
+      - Vtc
+      summary: Profils tarifaires du tenant (VTC-06 #8362, rôle vtc.admin)
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: Liste des profils tarifaires
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VtcFareProfile'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+    post:
+      tags:
+      - Vtc
+      summary: Création d'un profil tarifaire (VTC-06 #8362, rôle vtc.admin)
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VtcFareProfileInput'
+      responses:
+        '201':
+          description: Profil créé
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VtcFareProfile'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '422':
+          $ref: '#/components/responses/Error422'
+  /vtc/fare-profiles/{id}:
+    put:
+      tags:
+      - Vtc
+      summary: Mise à jour d'un profil tarifaire (VTC-06 #8362, rôle vtc.admin)
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VtcFareProfileInput'
+      responses:
+        '200':
+          description: Profil mis à jour
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VtcFareProfile'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '422':
+          $ref: '#/components/responses/Error422'
+    delete:
+      tags:
+      - Vtc
+      summary: Suppression d'un profil tarifaire (VTC-06 #8362, rôle vtc.admin)
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Profil supprimé
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+  /vtc/vehicles:
+    get:
+      tags:
+      - Vtc
+      summary: Véhicules de la flotte VTC (VTC-06 #8362, rôle vtc.admin)
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: Liste des véhicules
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VtcVehicle'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+    post:
+      tags:
+      - Vtc
+      summary: Création d'un véhicule (VTC-06 #8362, rôle vtc.admin)
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VtcVehicleInput'
+      responses:
+        '201':
+          description: Véhicule créé
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VtcVehicle'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '422':
+          $ref: '#/components/responses/Error422'
+  /vtc/vehicles/{id}:
+    put:
+      tags:
+      - Vtc
+      summary: Mise à jour d'un véhicule (VTC-06 #8362, rôle vtc.admin)
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VtcVehicleInput'
+      responses:
+        '200':
+          description: Véhicule mis à jour
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VtcVehicle'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '422':
+          $ref: '#/components/responses/Error422'
+    delete:
+      tags:
+      - Vtc
+      summary: Retrait d'un véhicule (VTC-06 #8362, rôle vtc.admin)
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Véhicule retiré
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+  /vtc/drivers:
+    get:
+      tags:
+      - Vtc
+      summary: Chauffeurs VTC du tenant (VTC-06 #8362, rôle vtc.admin)
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: Liste des chauffeurs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VtcDriver'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+    post:
+      tags:
+      - Vtc
+      summary: Création d'une fiche chauffeur (VTC-06 #8362, rôle vtc.admin)
+      description: >-
+        user_id relie la fiche à un employé (accès API chauffeur,
+        deny-by-default : sans fiche rattachée, aucune surface driver).
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VtcDriverInput'
+      responses:
+        '201':
+          description: Chauffeur créé
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VtcDriver'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '422':
+          $ref: '#/components/responses/Error422'
+  /vtc/drivers/{id}:
+    put:
+      tags:
+      - Vtc
+      summary: Mise à jour d'une fiche chauffeur (VTC-06 #8362, rôle vtc.admin)
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VtcDriverInput'
+      responses:
+        '200':
+          description: Chauffeur mis à jour
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/VtcDriver'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '422':
+          $ref: '#/components/responses/Error422'
+    delete:
+      tags:
+      - Vtc
+      summary: Suppression d'une fiche chauffeur (VTC-06 #8362, rôle vtc.admin)
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Chauffeur supprimé
+        '401':
+          $ref: '#/components/responses/Error401'
+        '403':
+          $ref: '#/components/responses/Error403'
+        '404':
+          $ref: '#/components/responses/Error404'
+        '409':
+          $ref: '#/components/responses/Error409'
+
 components:
   securitySchemes:
     BearerAuth:
@@ -42223,6 +43914,349 @@ components:
           schema:
             $ref: '#/components/schemas/ValidationErrorResponse'
   schemas:
+    VtcGeoPointInput:
+      type: object
+      required: [lat, lng]
+      properties:
+        lat:
+          type: number
+          minimum: -90
+          maximum: 90
+        lng:
+          type: number
+          minimum: -180
+          maximum: 180
+    VtcFareEstimate:
+      type: object
+      properties:
+        distance_m:
+          type: integer
+          description: Distance géodésique (core geo BC-34)
+        road_distance_m:
+          type: integer
+          description: Distance routière estimée (coefficient vtc.road_factor)
+        duration_s:
+          type: integer
+        price_minor:
+          type: integer
+          nullable: true
+          description: Prix estimé en unités mineures (null si aucun profil tarifaire)
+        currency:
+          type: string
+          minLength: 3
+          maxLength: 3
+        fare_profile_id:
+          type: integer
+          nullable: true
+    VtcRide:
+      type: object
+      properties:
+        id:
+          type: integer
+        reference:
+          type: string
+          description: Référence lisible (VO RideReference)
+        status:
+          type: string
+          enum: [requested, dispatching, accepted, arrived, in_progress, completed, expired, cancelled]
+        passenger_name:
+          type: string
+          nullable: true
+        passenger_phone:
+          type: string
+          nullable: true
+        pickup:
+          $ref: '#/components/schemas/VtcRidePoint'
+        dropoff:
+          $ref: '#/components/schemas/VtcRidePoint'
+        driver_id:
+          type: integer
+          nullable: true
+        fare_profile_id:
+          type: integer
+          nullable: true
+        estimated_distance_m:
+          type: integer
+          nullable: true
+        estimated_duration_s:
+          type: integer
+          nullable: true
+        estimated_price_minor:
+          type: integer
+          nullable: true
+        final_price_minor:
+          type: integer
+          nullable: true
+        currency:
+          type: string
+          minLength: 3
+          maxLength: 3
+        cancel_reason:
+          type: string
+          nullable: true
+        requested_at:
+          type: string
+          format: date-time
+          nullable: true
+        accepted_at:
+          type: string
+          format: date-time
+          nullable: true
+        arrived_at:
+          type: string
+          format: date-time
+          nullable: true
+        started_at:
+          type: string
+          format: date-time
+          nullable: true
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        cancelled_at:
+          type: string
+          format: date-time
+          nullable: true
+        expired_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+    VtcRidePoint:
+      type: object
+      properties:
+        latitude:
+          type: number
+          nullable: true
+        longitude:
+          type: number
+          nullable: true
+        address:
+          type: string
+          nullable: true
+    VtcDriverOffer:
+      type: object
+      properties:
+        ride_id:
+          type: integer
+        reference:
+          type: string
+        pickup:
+          $ref: '#/components/schemas/VtcRidePoint'
+        dropoff:
+          $ref: '#/components/schemas/VtcRidePoint'
+        estimated_distance_m:
+          type: integer
+          nullable: true
+        estimated_price_minor:
+          type: integer
+          nullable: true
+        currency:
+          type: string
+          minLength: 3
+          maxLength: 3
+        expires_at:
+          type: string
+          format: date-time
+          nullable: true
+    VtcDispatchRide:
+      type: object
+      properties:
+        id:
+          type: integer
+        reference:
+          type: string
+        status:
+          type: string
+          enum: [requested, dispatching, accepted, arrived, in_progress]
+        driver_id:
+          type: integer
+          nullable: true
+        pending_offer_driver_id:
+          type: integer
+          nullable: true
+        pickup:
+          $ref: '#/components/schemas/VtcRidePoint'
+        dropoff:
+          $ref: '#/components/schemas/VtcRidePoint'
+        requested_at:
+          type: string
+          format: date-time
+          nullable: true
+    VtcDriver:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+          nullable: true
+        name:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [offline, available, busy, suspended]
+        vehicle_id:
+          type: integer
+          nullable: true
+        current_latitude:
+          type: number
+          nullable: true
+        current_longitude:
+          type: number
+          nullable: true
+        location_updated_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+    VtcDriverInput:
+      type: object
+      required: [name]
+      properties:
+        user_id:
+          type: integer
+          minimum: 1
+          nullable: true
+        name:
+          type: string
+          maxLength: 120
+        phone:
+          type: string
+          maxLength: 40
+          nullable: true
+        status:
+          type: string
+          enum: [offline, available, busy, suspended]
+          nullable: true
+        vehicle_id:
+          type: integer
+          minimum: 1
+          nullable: true
+    VtcVehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+        plate:
+          type: string
+        brand:
+          type: string
+          nullable: true
+        model:
+          type: string
+          nullable: true
+        color:
+          type: string
+          nullable: true
+        seats:
+          type: integer
+          nullable: true
+        category:
+          type: string
+          enum: [berline, van, moto]
+        status:
+          type: string
+          enum: [active, inactive]
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+    VtcVehicleInput:
+      type: object
+      required: [plate]
+      properties:
+        plate:
+          type: string
+          maxLength: 20
+        brand:
+          type: string
+          maxLength: 60
+          nullable: true
+        model:
+          type: string
+          maxLength: 60
+          nullable: true
+        color:
+          type: string
+          maxLength: 40
+          nullable: true
+        seats:
+          type: integer
+          minimum: 1
+          maximum: 60
+          nullable: true
+        category:
+          type: string
+          enum: [berline, van, moto]
+          nullable: true
+        status:
+          type: string
+          enum: [active, inactive]
+          nullable: true
+    VtcFareProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        currency:
+          type: string
+          minLength: 3
+          maxLength: 3
+        base_minor:
+          type: integer
+        per_km_minor:
+          type: integer
+        per_minute_minor:
+          type: integer
+        minimum_minor:
+          type: integer
+        is_default:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+    VtcFareProfileInput:
+      type: object
+      required: [name, currency, base_minor, per_km_minor, per_minute_minor, minimum_minor]
+      properties:
+        name:
+          type: string
+          maxLength: 80
+        currency:
+          type: string
+          minLength: 3
+          maxLength: 3
+          pattern: '^[A-Za-z]{3}$'
+        base_minor:
+          type: integer
+          minimum: 0
+        per_km_minor:
+          type: integer
+          minimum: 0
+        per_minute_minor:
+          type: integer
+          minimum: 0
+        minimum_minor:
+          type: integer
+          minimum: 0
+        is_default:
+          type: boolean
+          nullable: true
+
     PharmacyProduct:
       type: object
       description: Produit d'officine (BC-31 PHARMACY, #7799) — DCI, forme, dosage, regulation, prix decimal.

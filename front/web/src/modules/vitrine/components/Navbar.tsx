@@ -7,29 +7,23 @@ import { withLocaleHref } from '../lib/locale-href'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowRight,
-  Book,
-  BookOpen,
   ChevronDown,
   Download,
-  FileText,
+  Fuel,
+  Gift,
   Globe,
-  HelpCircle,
-  Laptop,
+  GraduationCap,
   Mail,
   Menu,
-  MessageCircle,
   Monitor,
   Moon,
-  PenTool,
-  Server,
-  Smartphone,
+  Plane,
   Sun,
-  Users,
+  UtensilsCrossed,
   X,
 } from 'lucide-react'
 import { useVitrineLocale } from '../lib/vitrine-locale'
 import { t } from '@/lib/i18n/locale-catalog'
-import { GITHUB_REPO_URL } from '@/modules/vitrine/data/github-repo'
 import type { AppLocale } from '@/lib/i18n'
 import { getEnvConfig } from '../lib/env'
 
@@ -96,38 +90,29 @@ function filterNavEntries(entries: NavEntry[]): NavEntry[] {
  */
 function buildNavEntries(locale: AppLocale): NavEntry[] {
   const nav = (key: string) => t(locale, `vitrine.nav.${key}`)
+  // Retour propriétaire 2026-10-11 (#8387) : 7 entrées max. « Ressources »,
+  // « Installer Leopardo » et « Communauté » quittent la barre du haut — tous
+  // leurs liens restent accessibles au footer (sections Ressources, Légal et
+  // Applications mobiles) ; « Comparer » (/alternatives) monte en entrée
+  // directe, c'est un argument de vente.
   return [
     { href: '/pricing', label: nav('pricing') },
     {
-      label: nav('resources'),
+      label: nav('packs'),
       items: [
-        { href: '/guides/rh-startup', icon: <BookOpen className="w-4 h-4" />, label: nav('guides'), description: nav('guidesDesc') },
-        { href: '/blog', icon: <PenTool className="w-4 h-4" />, label: nav('insights'), description: nav('insightsDesc') },
-        { href: '/docs', icon: <Book className="w-4 h-4" />, label: nav('apiDocs'), description: nav('apiDocsDesc') },
-        { href: '/changelog', icon: <FileText className="w-4 h-4" />, label: nav('changelog'), description: nav('changelogDesc') },
+        { href: '/packs', icon: <Gift className="w-4 h-4" />, label: nav('packsHub'), description: nav('packsHubDesc') },
+        { href: '/restaurateur', icon: <UtensilsCrossed className="w-4 h-4" />, label: nav('packsRestaurant'), description: nav('packsRestaurantDesc') },
+        { href: '/packs/station-service', icon: <Fuel className="w-4 h-4" />, label: nav('packsFuel'), description: nav('packsFuelDesc') },
+        { href: '/packs/ecole', icon: <GraduationCap className="w-4 h-4" />, label: nav('packsEdu'), description: nav('packsEduDesc') },
+        { href: '/packs/agence-de-voyage', icon: <Plane className="w-4 h-4" />, label: nav('packsTravel'), description: nav('packsTravelDesc') },
       ],
     },
-    { href: '/contact', label: nav('contact') },
-    {
-      label: nav('install'),
-      items: [
-        { href: '/download?platform=windows', icon: <Monitor className="w-4 h-4" />, label: 'Windows', description: nav('windowsDesc') },
-        { href: '/download?platform=macos', icon: <Laptop className="w-4 h-4" />, label: 'macOS', description: nav('macosDesc') },
-        { href: '/download?platform=android', icon: <Smartphone className="w-4 h-4" />, label: 'Android', description: nav('androidDesc') },
-        { href: '/download?platform=ios', icon: <Smartphone className="w-4 h-4" />, label: 'iPhone', description: nav('iosDesc') },
-        // #8068 — double funnel : l'install self-host (Docker, dépôt public)
-        // rejoint les apps dans le menu « Installer Leopardo ».
-        { href: GITHUB_REPO_URL, icon: <Server className="w-4 h-4" />, label: 'Self-host', description: nav('selfhostDesc') },
-      ],
-    },
-    {
-      label: nav('community'),
-      items: [
-        { href: '/contact?topic=community', icon: <Users className="w-4 h-4" />, label: nav('community'), description: nav('communityDesc') },
-        { href: '/faq', icon: <HelpCircle className="w-4 h-4" />, label: nav('faq'), description: nav('faqDesc') },
-        { href: '/contact?topic=support', icon: <MessageCircle className="w-4 h-4" />, label: nav('support'), description: nav('supportDesc') },
-      ],
-    },
+    { href: '/alternatives', label: nav('comparer') },
+    // Retour propriétaire 2026-10-11 (#8406) : « Contact » vit déjà au footer
+    // (colonne Ressources) — sa place en navbar est réinvestie en « Carrières »
+    // (/careers, page existante mais sans lien en haut), levier de marque
+    // employeur. La barre reste ≤ 7 entrées (#8387).
+    { href: '/careers', label: nav('careers') },
   ]
 }
 

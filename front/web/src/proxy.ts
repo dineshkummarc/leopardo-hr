@@ -56,6 +56,8 @@ const DASHBOARD_PREFIXES = [  '/dashboard',
   '/social-marketing',
   '/restaurant',
   '/showcase',
+  // FUND-090 : gestion des cagnottes (route protégée tenant).
+  '/fundraising',
   // BC-19 (#7425) — mur de caméras + détail : même gate cosmétique de session
   // que le reste de la zone dashboard (la garde réelle reste l'API).
   '/cameras',
@@ -82,6 +84,8 @@ const DASHBOARD_PREFIXES = [  '/dashboard',
   '/modules',
   // BOS-035 (#8224) — panneau Assistant Leo IA : zone dashboard.
   '/assistant',
+  // BC-35 VTC (#8349, VTC-07/#8363) — console dispatch : zone dashboard.
+  '/vtc',
 ];
 
 export function proxy(request: NextRequest) {
@@ -205,6 +209,7 @@ export const config = {
     '/social-marketing/:path*',
     '/restaurant/:path*', // BC-25 portail client (split /restaurant → /restaurateur)
     '/showcase/:path*', // BC-27 site vitrine tenant (management) — gate session
+    '/fundraising/:path*', // FUND-090 gestion des cagnottes (espace tenant) — gate session
     '/cameras/:path*', // BC-19 mur de caméras + détail (#7425) — gate session
     '/fleet/:path*', // #7400 flotte & véhicules de service (module horizontal)
     '/crm/:path*', // #7663 CRM — gate session (source unique #3377)
@@ -219,6 +224,7 @@ export const config = {
     '/communication/:path*', // BC-29 (#7691) boîte connectée — gate session
     '/modules/:path*', // #7908 page Modules (statut, auto-activation) — gate session
     '/assistant/:path*', // BOS-035 (#8224) assistant Leo IA — gate session
+    '/vtc/:path*', // BC-35 VTC (#8349, VTC-07/#8363) console dispatch — gate session
     // Vitrine landing — ?lang= → en-tête x-vitrine-lang (issue #4004).
     // Routes statiques (exactes) + préfixes dynamiques (source
     // VITRINE_LANG_PREFIXES, garde protected-prefixes.test.ts).

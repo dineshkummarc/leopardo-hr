@@ -1,19 +1,17 @@
 'use client';
 
-import { Sparkles, Server, Zap, Users, TrendingUp, Star } from 'lucide-react';
+import { Sparkles, Gift, Zap, Users, TrendingUp, Star } from 'lucide-react';
 import { useDarkMode } from '@/modules/vitrine/hooks/useDarkMode';
-import { GITHUB_REPO_URL } from '@/modules/vitrine/data/github-repo';
 import {
   Navbar,
   Footer,
   useScrollReveal,
   SocialProofMetrics,
   ProductScreenshots,
-  WhyOpenSourceSection,
+  WhyLeopardoSection,
   TrustedBrands,
   // Phase-3 sections — no more Legacy prefixes
   HeroSection,
-  HeroProductShowcase,
   SolutionStackSection,
   FAQSection,
   CTASection,
@@ -32,6 +30,7 @@ import { getFaqItems } from '@/modules/vitrine/data/faq';
 import { getTestimonials, TESTIMONIALS_ARE_DEMO } from '@/modules/vitrine/data/testimonials';
 import { StickyMobileCTA } from '@/components/StickyMobileCTA';
 import { QuickTrialEmailForm } from '@/modules/vitrine/components/HeroSection';
+import { HeroScene3DPanel } from '@/modules/vitrine/components/hero/HeroScene3DPanel';
 
 const STAT_ICONS = [TrendingUp, Users, Zap, Star] as const;
 
@@ -66,13 +65,13 @@ export default function LandingPage() {
           headline={`${copy.hero.titleTop} ${copy.hero.titleBottom}`}
           subheadline={copy.hero.subtitle}
           ctaPrimary={{ text: copy.hero.primaryCta, href: '/signup' }}
-          // #8068 — double funnel : l'essai cloud ET l'install self-host dès
-          // le hero (le dépôt public = page d'installation pour un technicien).
+          // Funnel unique grand public : l'essai cloud + la découverte des
+          // packs métiers OFFERTS (la promesse d'entrée du Business OS).
           ctaSecondary={{
             text: copy.hero.secondaryCta,
-            href: GITHUB_REPO_URL,
+            href: '/packs',
             icon: (
-              <Server className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <Gift className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             ),
           }}
           ctaReassurance={copy.hero.ctaReassurance}
@@ -88,8 +87,11 @@ export default function LandingPage() {
             <QuickTrialEmailForm locale={locale} copy={copy.heroQuickTrial} />
           }
           layout="split"
-          // #8067 — produit-first : screenshot réel + badge GitHub à la place de la mascotte (LeoHeroVisual reste dispo en marque secondaire)
-          visual={<HeroProductShowcase locale={locale} />}
+          // #8389 — la constellation 3D vit en colonne de droite (modules
+          // cliquables, #8390) ; plus de scène plein cadre derrière le texte.
+          // Le screenshot admin sort du héro (HeroProductShowcase reste dispo).
+          backgroundScene={false}
+          visual={<HeroScene3DPanel />}
         />
 
         {/* ─── PREUVE SOCIALE + HOOK ZKTECO — remontés juste après le hero (#8072) ─── */}
@@ -140,9 +142,9 @@ export default function LandingPage() {
 
         {/* ─── PRODUCT VISUAL ─── */}
         <ProductScreenshots locale={locale} />
-        {/* #8065 : « Pourquoi open source » remplace MarketingReadinessSection
-            (langage de pilotage interne — composant retiré par #8075). */}
-        <WhyOpenSourceSection locale={locale} />
+        {/* « Pourquoi Leopardo » : maîtrise de l'outil (données, coût, lock-in)
+            — le positionnement Business OS, sans jargon de licence. */}
+        <WhyLeopardoSection locale={locale} />
 
         {/* ─── VERTICALES en cartes cliquables (#8072) ─── */}
         <VerticalsSection locale={locale} />
@@ -189,7 +191,7 @@ export default function LandingPage() {
           headline={copy.cta.title}
           subheadline={copy.cta.subtitle}
           ctaPrimary={{ text: copy.cta.primary, href: '/signup' }}
-          ctaSecondary={{ text: copy.cta.secondary, href: GITHUB_REPO_URL }}
+          ctaSecondary={{ text: copy.cta.secondary, href: '/packs' }}
           background="gradient"
         />
       </main>
